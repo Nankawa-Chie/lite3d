@@ -1,0 +1,3883 @@
+@charset "UTF-8";
+@import url("./src/FontsGoogleRoboto.css");
+@keyframes 时钟Analogico {
+	to {
+		transform: rotate(360deg);
+	}
+}
+@keyframes shake {
+	0% {
+		transform: rotate(-2deg);
+	}
+	100% {
+		transform: rotate(2deg);
+	}
+}
+@keyframes shake-2 {
+	0% {
+		transform: rotate(-1deg);
+	}
+	100% {
+		transform: rotate(1deg);
+	}
+}
+@keyframes grabarPantalla {
+	0% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	100% {
+		opacity: 0;
+		transform: scale(0.9);
+	}
+}
+body {
+	overflow-x: hidden;
+	color: #666;
+	margin: 0 auto;
+}
+body * {
+	font-family: "Roboto", sans-serif;
+}
+body p,
+body h1,
+body h2,
+body h3,
+body h4,
+body h5,
+body h6 {
+	margin: 0;
+}
+body a {
+	color: #666;
+	text-decoration: none;
+}
+
+#fixedApp {
+	position: fixed;
+}
+#fixedApp.widgetFull {
+	height: calc(76px * 2);
+}
+#fixedApp.widgetFull .应用图标 {
+	width: 236px;
+	height: calc(100% - 26px);
+}
+#fixedApp[data-app="widgetFull日历"] .应用图标 {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	padding: 10px;
+	box-sizing: border-box;
+}
+#fixedApp[data-app="widgetFull日历"] .应用图标 .eventos {
+	width: calc(100% - 112px);
+	font-size: 12px;
+}
+#fixedApp[data-app="widgetFull日历"] .应用图标 .日历Wrapper {
+	width: 112px;
+}
+/* 10-12 */
+#fixedApp[data-app="widgetFull日历"] .应用图标 .日历Wrapper .mes .mesName {
+	color: #d24f54;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+#fixedApp[data-app="widgetFull日历"] .应用图标 .日历Wrapper .mes .日历Tabla .tablaHeader,
+#fixedApp[data-app="widgetFull日历"] .应用图标 .日历Wrapper .mes .日历Tabla .tablaContent {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-start;
+	align-content: center;
+}
+#fixedApp[data-app="widgetFull日历"] .应用图标 .日历Wrapper .mes .日历Tabla .tablaHeader > *,
+#fixedApp[data-app="widgetFull日历"] .应用图标 .日历Wrapper .mes .日历Tabla .tablaContent > * {
+	width: 16px;
+	text-align: center;
+	font-size: 8px;
+	font-weight: 600;
+}
+#fixedApp[data-app="widgetFull日历"] .应用图标 .日历Wrapper .mes .日历Tabla .tablaHeader {
+	margin: 5px auto;
+}
+#fixedApp[data-app="widgetFull日历"] .应用图标 .日历Wrapper .mes .日历Tabla .tablaContent .diaNum {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	height: 16px;
+}
+#fixedApp[data-app="widgetFull日历"] .应用图标 .日历Wrapper .mes .日历Tabla .tablaContent .diaNum.active {
+	color: #fff;
+	background-color: #d24f54;
+	border-radius: 50%;
+}
+#fixedApp.日历动态 .日期Wrapper {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 100%;
+	height: 100%;
+	padding: 5px;
+	box-sizing: border-box;
+}
+#fixedApp.日历动态 .日期Wrapper .diaNom {
+	color: #d24f54;
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+#fixedApp.日历动态 .日期Wrapper .diaNum {
+	color: #000;
+	font-size: 22px;
+	font-weight: 300;
+}
+#fixedApp.时钟动态 .时钟Wrapper {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 100%;
+	height: 100%;
+	padding: 3px;
+	background-color: #000;
+	box-sizing: border-box;
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	background-color: #fff;
+	position: relative;
+	overflow: hidden;
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero {
+	position: absolute;
+	bottom: 50%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	width: 10px;
+	height: calc(50% - 1px);
+	color: #000;
+	font-size: 5px;
+	font-weight: 600;
+	text-align: center;
+	transform-origin: bottom;
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(1) {
+	transform: rotate(30deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(1):before {
+	transform: rotate(-30deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(2) {
+	transform: rotate(60deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(2):before {
+	transform: rotate(-60deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(3) {
+	transform: rotate(90deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(3):before {
+	transform: rotate(-90deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(4) {
+	transform: rotate(120deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(4):before {
+	transform: rotate(-120deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(5) {
+	transform: rotate(150deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(5):before {
+	transform: rotate(-150deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(6) {
+	transform: rotate(180deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(6):before {
+	transform: rotate(-180deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(7) {
+	transform: rotate(210deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(7):before {
+	transform: rotate(-210deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(8) {
+	transform: rotate(240deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(8):before {
+	transform: rotate(-240deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(9) {
+	transform: rotate(270deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(9):before {
+	transform: rotate(-270deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(10) {
+	transform: rotate(300deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(10):before {
+	transform: rotate(-300deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(11) {
+	transform: rotate(330deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(11):before {
+	transform: rotate(-330deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(12) {
+	transform: rotate(360deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:nth-child(12):before {
+	transform: rotate(-360deg);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .numeros .numero:before {
+	content: attr(data-num);
+	display: block;
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .指针s:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	width: 3px;
+	height: 3px;
+	border-radius: 50%;
+	background-color: #000;
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .指针s .指针 {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .指针s .指针.时间 .bar {
+	animation-duration: 21600s;
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .指针s .指针.时间 .bar:before {
+	height: calc(50% - 10px);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .指针s .指针.时分 .bar {
+	animation-duration: 3600s;
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .指针s .指针.时秒 .bar:before {
+	background-color: #d24f54;
+	bottom: 40%;
+	height: calc(60% - 4px);
+	animation-duration: 60s;
+	animation-timing-function: steps(60);
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .指针s .指针 .bar {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	animation: 时钟Analogico 60s infinite linear;
+}
+#fixedApp.时钟动态 .时钟Wrapper .时钟 .指针s .指针 .bar:before {
+	content: "";
+	position: absolute;
+	bottom: 50%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	width: 1px;
+	height: calc(50% - 4px);
+	background-color: #000;
+}
+#fixedApp .应用图标 {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 50px;
+	height: 50px;
+	margin: 3px auto;
+	border-radius: 10px;
+	background-color: #fafafa;
+	overflow: hidden;
+}
+#fixedApp .应用名,
+#fixedApp .通知 {
+	display: none;
+}
+
+.fixedMenuFixedApp {
+	position: fixed;
+	width: 190px;
+	top: 413px;
+	left: 300px;
+	border-radius: 15px;
+	background-color: rgba(255, 255, 255, 0.8);
+}
+.fixedMenuFixedApp .菜单选项 {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	align-content: center;
+	padding: 7px 15px;
+	font-size: 12px;
+	color: #000;
+	cursor: pointer;
+	box-sizing: border-box;
+}
+.fixedMenuFixedApp .菜单选项.卸载 {
+	color: red;
+}
+.fixedMenuFixedApp .菜单选项:not(:last-child) {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.fixedMenuFixedApp .菜单选项 .应用图标 {
+	width: 18px;
+	height: 18px;
+	margin-left: 10px;
+}
+.fixedMenuFixedApp .菜单选项 .应用图标 svg {
+	width: 100%;
+	height: 100%;
+}
+.fixedMenuFixedApp .菜单选项 .应用图标 svg path,
+.fixedMenuFixedApp .菜单选项 .应用图标 svg circle {
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+#iOSAlert {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.3);
+	backdrop-filter: blur(2px);
+	z-index: 10;
+}
+#iOSAlert .容器 {
+	max-width: 70%;
+	padding-top: 10px;
+	border-radius: 10px;
+	text-align: center;
+	background-color: rgba(255, 255, 255, 0.95);
+	box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+	box-sizing: border-box;
+	transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) all 0.3s;
+}
+#iOSAlert .容器.hidAnim {
+	opacity: 0;
+	transform: scale(1.1);
+}
+#iOSAlert .容器 p {
+	color: #000;
+	font-size: 12px;
+	padding: 0 10px;
+}
+#iOSAlert .容器 p.encabezado {
+	font-size: 13px;
+	font-weight: 600;
+	margin-bottom: 5px;
+}
+#iOSAlert .容器 p.mensaje {
+	padding-bottom: 10px;
+}
+#iOSAlert .容器 .actions {
+	margin-top: 10px;
+}
+#iOSAlert .容器 .actions .action {
+	padding: 10px;
+	font-size: 12px;
+	color: #6da7ff;
+	border-top: 1px solid rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+}
+#iOSAlert .容器 .actions .action.warning {
+	color: red;
+}
+
+.iphone模拟 {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 100%;
+	min-height: 100vh;
+}
+.iphone模拟 .container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 90%;
+	margin: 0 auto;
+	padding: 50px 0;
+	overflow: hidden;
+}
+.iphone模拟 .container .交互元素 {
+	width: 600px;
+	margin: 50px;
+}
+.iphone模拟 .container .交互元素.hidden > * {
+	opacity: 0;
+	transform: translateY(-10px);
+}
+.iphone模拟 .container .交互元素 > * {
+	margin-bottom: 10px;
+	transition: ease all 0.5s;
+}
+.iphone模拟 .container .交互元素 > *:nth-child(1) {
+	transition-delay: 0.1s;
+}
+.iphone模拟 .container .交互元素 > *:nth-child(2) {
+	transition-delay: 0.2s;
+}
+.iphone模拟 .container .交互元素 > *:nth-child(3) {
+	transition-delay: 0.3s;
+}
+.iphone模拟 .container .交互元素 > *:nth-child(4) {
+	transition-delay: 0.4s;
+}
+.iphone模拟 .container .交互元素 > *:nth-child(5) {
+	transition-delay: 0.5s;
+}
+.iphone模拟 .container .交互元素 > *:nth-child(6) {
+	transition-delay: 0.6s;
+}
+.iphone模拟 .container .交互元素 > *:nth-child(7) {
+	transition-delay: 0.7s;
+}
+.iphone模拟 .container .交互元素 > *:nth-child(8) {
+	transition-delay: 0.8s;
+}
+.iphone模拟 .container .交互元素 > *:nth-child(9) {
+	transition-delay: 0.9s;
+}
+.iphone模拟 .container .交互元素 > *:nth-child(10) {
+	transition-delay: 1s;
+}
+.iphone模拟 .container .交互元素 h1 {
+	font-size: 30px;
+	margin-bottom: 20px;
+}
+.iphone模拟 .container .交互元素 .importante:before {
+	content: "*";
+	margin-right: 5px;
+	color: red;
+}
+.iphone模拟 .container .交互元素 .按钮es {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-start;
+	align-content: center;
+	margin: 20px auto;
+}
+.iphone模拟 .container .交互元素 .按钮es .按钮 {
+	padding: 10px 20px;
+	margin-right: 20px;
+	min-width: 225px;
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	background-color: #1b1b1b;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+.iphone模拟 .container .交互元素 .按钮es .按钮.active:before {
+	content: attr(data-back);
+}
+.iphone模拟 .container .交互元素 .按钮es .按钮:before {
+	content: attr(data-front);
+}
+.iphone模拟 .container .iphone {
+	width: 400px;
+	height: 700px;
+	border-radius: 45px;
+	position: relative;
+	user-select: none;
+	transition: ease all 1s;
+}
+.iphone模拟 .container .iphone.initAnimation {
+	transform: translateY(200px);
+	opacity: 0;
+}
+.iphone模拟 .container .iphone.initAnimation .bordeColor {
+	transform: rotateY(180deg);
+	box-shadow: inset 0 0 7px 1px #fff;
+}
+.iphone模拟 .container .iphone.initAnimation .bordeColor .backSide {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: all;
+}
+.iphone模拟 .container .iphone.powerOn .bordeColor .黑色边框 .logo {
+	opacity: 1;
+	transition-delay: 1s;
+}
+/*------------------------------------------------------------------------- 开机动画 */
+.iphone模拟 .container .iphone.arrhe .bordeColor .黑色边框 .logo {
+	transform: scale(25);
+	transition-duration: 0.5s;
+}
+.iphone模拟 .container .iphone.showBackSide {
+	transform: translateY(-10px);
+}
+.iphone模拟 .container .iphone.showBackSide .bordeColor {
+	transform: rotateY(180deg);
+	box-shadow: inset 0 0 7px 1px #fff;
+}
+.iphone模拟 .container .iphone.showBackSide .bordeColor .backSide {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: all;
+}
+.iphone模拟 .container .iphone:before,
+.iphone模拟 .container .iphone:after {
+	content: "";
+	position: absolute;
+	background-color: rgba(255, 255, 255, 0.1);
+	width: 6px;
+	height: 7px;
+	z-index: 1;
+}
+.iphone模拟 .container .iphone:before {
+	top: 1px;
+	right: 70px;
+}
+.iphone模拟 .container .iphone:after {
+	bottom: -1px;
+	left: 70px;
+}
+.iphone模拟 .container .iphone .bordeColor {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	height: 100%;
+	width: 100%;
+	background-color: #152839;
+	border: 1px solid rgba(255, 255, 255, 0.6);
+	box-shadow: inset 0 0 3px 1px #fff;
+	border-radius: 45px;
+	position: relative;
+	transition: ease all 0.5s;
+}
+.iphone模拟 .container .iphone .bordeColor:before,
+.iphone模拟 .container .iphone .bordeColor:after {
+	content: "";
+	position: absolute;
+	top: 65px;
+	background-color: rgba(255, 255, 255, 0.1);
+	width: 7px;
+	height: 6px;
+	z-index: 1;
+}
+.iphone模拟 .container .iphone .bordeColor:before {
+	left: 0px;
+}
+.iphone模拟 .container .iphone .bordeColor:after {
+	right: 0px;
+}
+.iphone模拟 .container .iphone .bordeColor .按钮es:before,
+.iphone模拟 .container .iphone .bordeColor .按钮es:after {
+	content: "";
+	position: absolute;
+	bottom: 65px;
+	background-color: rgba(255, 255, 255, 0.1);
+	width: 7px;
+	height: 6px;
+	z-index: 1;
+}
+.iphone模拟 .container .iphone .bordeColor .按钮es:before {
+	left: 0px;
+}
+.iphone模拟 .container .iphone .bordeColor .按钮es:after {
+	right: 0px;
+}
+.iphone模拟 .container .iphone .bordeColor .按钮es > * {
+	position: absolute;
+	left: -5px;
+	width: 10px;
+	background: linear-gradient(90deg, transparent, #152839);
+	border-radius: 20px 10px 10px 20px;
+	cursor: pointer;
+}
+.iphone模拟 .container .iphone .bordeColor .按钮es .touchID {
+	top: 160px;
+	right: -6px;
+	left: auto;
+	height: 80px;
+	background: linear-gradient(90deg, #152839, transparent);
+	border-radius: 10px 20px 20px 10px;
+	cursor: pointer;
+}
+.iphone模拟 .container .iphone .bordeColor .按钮es .switch {
+	top: 100px;
+	height: 25px;
+}
+.iphone模拟 .container .iphone .bordeColor .按钮es .voice {
+	top: 150px;
+	height: 45px;
+}
+.iphone模拟 .container .iphone .bordeColor .按钮es .voice.down {
+	top: 210px;
+}
+.iphone模拟 .container .iphone .bordeColor .backSide {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	position: absolute;
+	width: calc(100% - 12px);
+	height: calc(100% - 12px);
+	border-radius: 40px;
+	background-color: #152839;
+	transform: rotateY(180deg);
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	overflow: hidden;
+	transition: ease all 0.3s;
+	z-index: 1000;
+}
+.iphone模拟 .container .iphone .bordeColor .backSide:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: radial-gradient(circle farthest-corner at 245px 0px, rgba(255, 255, 255, 0.1), transparent);
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	align-content: space-between;
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	width: 120px;
+	height: 120px;
+	padding: 10px;
+	border-radius: 25px;
+	box-sizing: border-box;
+	background: linear-gradient(45deg, rgba(0, 0, 0, 0.3), transparent);
+	box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.4);
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border-radius: 25px;
+	box-shadow: -10px 0 10px -10px rgba(255, 255, 255, 0.4);
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .cam {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 42px;
+	height: 42px;
+	border-radius: 50%;
+	position: relative;
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .cam:nth-child(3) {
+	margin: auto 0;
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .cam:before,
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .cam:after {
+	content: "";
+	position: absolute;
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .cam:before {
+	width: calc(100% + 10px);
+	height: calc(100% + 10px);
+	border-radius: 50%;
+	box-shadow: -2px 2px 8px 0 #000;
+	background: linear-gradient(45deg, #152839 65%, rgba(255, 255, 255, 0.5));
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .cam:after {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	background-color: #1b1b1b;
+	border: 9px solid rgba(0, 0, 0, 0.2);
+	position: relative;
+	box-sizing: border-box;
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .cam .lente {
+	position: absolute;
+	width: 25%;
+	height: 25%;
+	border-radius: 50%;
+	box-shadow: inset 2px 0px 4px -4px #fff;
+	background: radial-gradient(ellipse farthest-corner at 8px 2px, #152839, #000);
+	z-index: 1;
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .flash,
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .sensor {
+	position: absolute;
+	right: 20px;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .flash:before,
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .sensor:before {
+	content: "";
+	position: absolute;
+	border-radius: 50%;
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .flash {
+	top: 5px;
+	background-color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .flash:before {
+	width: 100%;
+	height: 100%;
+	background: radial-gradient(#fff291, #ffd5fe);
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .sensor {
+	bottom: 5px;
+	background-color: #000;
+}
+.iphone模拟 .container .iphone .bordeColor .backSide .相机s .sensor:before {
+	top: -3px;
+	right: -7px;
+	width: 3px;
+	height: 3px;
+	background-color: #000;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: calc(100% - 14px);
+	height: calc(100% - 14px);
+	border-radius: 40px;
+	background-color: #000;
+	position: relative;
+	overflow: hidden;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框:after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 40px;
+	border: 7px solid #000;
+	box-sizing: border-box;
+	pointer-events: none;
+	z-index: 100;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	position: absolute;
+	top: 0;
+	width: 150px;
+	height: 32px;
+	border-bottom-left-radius: 17px;
+	border-bottom-right-radius: 17px;
+	background-color: #000;
+	z-index: 100;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch:before,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	border: 7px solid transparent;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch:before {
+	left: -17px;
+	border-right-color: #000;
+	transform: rotate(-50deg);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch:after {
+	right: -17px;
+	border-left-color: #000;
+	transform: rotate(50deg);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch .bocina {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-start;
+	align-content: center;
+	width: 40px;
+	height: 4px;
+	border-radius: 20px;
+	background-color: #1b1b1b;
+	border: 0.7px solid #171717;
+	box-shadow: inset 0px -0.3px 1px 0px #8c8c8c;
+	position: relative;
+	overflow: hidden;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch .bocina:before,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch .bocina:after {
+	content: "";
+	position: absolute;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch .bocina:before {
+	width: 0;
+	height: 60%;
+	transform: skew(-10deg);
+	box-shadow: 1px 0 0px 0.2px #313131, 2px 0 0px 0.2px #313131, 3px 0 0px 0.2px #313131, 4px 0 0px 0.2px #313131,
+		5px 0 0px 0.2px #313131, 6px 0 0px 0.2px #313131, 7px 0 0px 0.2px #313131, 8px 0 0px 0.2px #313131,
+		9px 0 0px 0.2px #313131, 10px 0 0px 0.2px #313131, 11px 0 0px 0.2px #313131, 12px 0 0px 0.2px #313131,
+		13px 0 0px 0.2px #313131, 14px 0 0px 0.2px #313131, 15px 0 0px 0.2px #313131, 16px 0 0px 0.2px #313131,
+		17px 0 0px 0.2px #313131, 18px 0 0px 0.2px #313131, 19px 0 0px 0.2px #313131, 20px 0 0px 0.2px #313131,
+		21px 0 0px 0.2px #313131, 22px 0 0px 0.2px #313131, 23px 0 0px 0.2px #313131, 24px 0 0px 0.2px #313131,
+		25px 0 0px 0.2px #313131, 26px 0 0px 0.2px #313131, 27px 0 0px 0.2px #313131, 28px 0 0px 0.2px #313131,
+		29px 0 0px 0.2px #313131, 30px 0 0px 0.2px #313131, 31px 0 0px 0.2px #313131, 32px 0 0px 0.2px #313131,
+		33px 0 0px 0.2px #313131, 34px 0 0px 0.2px #313131, 35px 0 0px 0.2px #313131, 36px 0 0px 0.2px #313131,
+		37px 0 0px 0.2px #313131, 38px 0 0px 0.2px #313131, 39px 0 0px 0.2px #313131;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch .bocina:after {
+	width: 95%;
+	height: 0;
+	box-shadow: 1px -0.8px 0px 0.2px #313131, 1px 0px 0px 0.2px #313131, 1px 0.8px 0px 0.2px #313131;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch .相机 {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	position: absolute;
+	right: 35px;
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	background-color: #1b1b1b;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch .相机:before,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch .相机:after {
+	content: "";
+	position: absolute;
+	border-radius: 50%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch .相机:before {
+	width: calc(100% - 4px);
+	height: calc(100% - 4px);
+	background: radial-gradient(#000, #152839 60%);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .notch .相机:after {
+	width: 4px;
+	height: 4px;
+	margin-top: 2px;
+	margin-right: 2px;
+	background-color: rgba(255, 255, 255, 0.1);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .logo {
+	position: absolute;
+	width: 70px;
+	height: 70px;
+	opacity: 0;
+	transition: ease all 0.3s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .logo svg {
+	color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen {
+	background-image: url("./src/iPhone-Xs-WP-1.jpg");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: calc(100% - 14px);
+	height: calc(100% - 14px);
+	border-radius: 32px;
+	background-color: #fff;
+	background-color: transparent;
+	background-blend-mode: soft-light;
+	position: relative;
+	overflow: hidden;
+	transition: ease all 1s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.锁屏 {
+	opacity: 0;
+	pointer-events: none;
+	transition: ease all 0.2s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.blur {
+	background-image: url(./src/4.png);
+	transition-duration: 0.5s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.filterBlur {
+	background-color: rgba(0, 0, 0, 0.2);
+	filter: blur(5px);
+	pointer-events: none;
+	transition-duration: 0.2s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.filterBlur .appScreen {
+	transform: scale(0.9);
+	transition-duration: 0.2s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .appScreen .app {
+	animation: shake 0.1s linear alternate infinite;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .appScreen .app.widgetFull {
+	animation: shake-2 0.1s linear alternate infinite;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .leftSide .operador,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .leftSide .时间,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .leftSide .signal,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .leftSide .datos,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .leftSide .电量,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .rightSide .operador,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .rightSide .时间,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .rightSide .signal,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .rightSide .datos,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .rightSide .电量 {
+	opacity: 0;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .leftSide .widgetPlus,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .leftSide .exitShake,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .rightSide .widgetPlus,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .statusBar .rightSide .exitShake {
+	transform: scale(1);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .appScreen .wrapperDots {
+	padding: 3px 10px;
+	border-radius: 20px;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.shakingApps .appScreen .wrapperDots .dot {
+	background-color: rgba(0, 0, 0, 0.3);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.widgetScreenOpen {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen.widgetScreenOpen .statusBar {
+	opacity: 0;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .buscador {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 100%;
+	height: 35px;
+	color: #fff;
+	font-size: 14px;
+	border-radius: 10px;
+	margin: 10px auto 30px auto;
+	background-color: rgba(255, 255, 255, 0.5);
+	cursor: not-allowed;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .buscador .应用图标 {
+	width: 15px;
+	height: 15px;
+	margin-right: 7px;
+	position: relative;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .buscador .应用图标:before,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .buscador .应用图标:after {
+	content: "";
+	position: absolute;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .buscador .应用图标:before {
+	top: 0;
+	left: 0;
+	width: 13px;
+	height: 13px;
+	border-radius: 50%;
+	border: 1px solid currentColor;
+	box-sizing: border-box;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .buscador .应用图标:after {
+	bottom: 0;
+	right: 0;
+	width: 1px;
+	height: 5px;
+	background-color: currentColor;
+	transform: rotate(-45deg);
+	transform-origin: bottom left;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	align-content: center;
+	height: 20px;
+	padding: 5px 20px 0px 20px;
+	padding-right: 12px;
+	transition: ease all 0.1s;
+	position: relative;
+	z-index: 1;
+	cursor: grab;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar.onlyLed .leftSide,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar.onlyLed .rightSide {
+	display: none;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar.camActiv:after,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar.micActiv:after {
+	content: "";
+	position: absolute;
+	top: 10px;
+	right: 80px;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background-color: #00dc54;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar.micActiv:after {
+	background-color: #ff8e00;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar.mov {
+	transform: translateY(-100%);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .leftSide {
+	color: #fff;
+	font-size: 12px;
+	text-transform: uppercase;
+	position: relative;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .leftSide > *.hidden {
+	display: none;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .leftSide .widgetPlus {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 40px;
+	height: 17px;
+	border-radius: 20px;
+	background-color: rgba(255, 255, 255, 0.5);
+	transform: scale(0);
+	overflow: hidden;
+	cursor: pointer;
+	transition: ease all 0.2s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .leftSide .widgetPlus:before,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .leftSide .widgetPlus:after {
+	position: absolute;
+	content: "";
+	width: 8px;
+	height: 1px;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .leftSide .widgetPlus:after {
+	transform: rotate(90deg);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-end;
+	align-content: center;
+	position: relative;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .signal {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 23px;
+	height: 14px;
+	position: relative;
+	overflow: hidden;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .signal.mid:before {
+	opacity: 0.4;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .signal.low:before,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .signal.low:after,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .signal.low .bar::before {
+	opacity: 0.4;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .signal:before,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .signal:after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	width: 3px;
+	border-radius: 5px;
+	background-color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .signal:before {
+	right: 0;
+	height: 100%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .signal:after {
+	right: 4px;
+	height: 80%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .signal .bar:before,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .signal .bar:after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	width: 3px;
+	border-radius: 5px;
+	background-color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .signal .bar:before {
+	right: 8px;
+	height: 60%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .signal .bar:after {
+	right: 12px;
+	height: 40%;
+}
+/*---------------------------------------------------------- 移动通信系统 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .datos {
+	margin: 0 5px;
+	color: #fff;
+	font-size: 12px;
+}
+/*-------------------------------------------------------------- WIFI */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .wifi {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 18px;
+	height: 12px;
+	margin: 0 3px;
+	position: relative;
+	overflow: hidden;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .wifi.mid:before {
+	opacity: 0.4;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .wifi.low:before,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .wifi.low:after {
+	opacity: 0.4;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .wifi .dot {
+	position: absolute;
+	bottom: -2px;
+	width: 4px;
+	height: 2px;
+	border-radius: 50%;
+	border: 2px solid transparent;
+	border-top-color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .wifi:before,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .wifi:after {
+	content: "";
+	position: absolute;
+	border: 2px solid transparent;
+	border-radius: 50%;
+	border-top-color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .wifi:before {
+	top: 0;
+	width: 100%;
+	height: 8px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .wifi:after {
+	top: 4px;
+	width: 10px;
+	height: 3px;
+}
+/*-------------------------------------------------------- 电量 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .电量 {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 18px;
+	height: 9px;
+	border-radius: 2px;
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	position: relative;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .电量.full:after {
+	width: calc(100% - 1px);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .电量.mid:after {
+	width: 50%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .电量.low:after {
+	width: 20%;
+	background-color: #ffe600;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .电量:before,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .电量:after {
+	content: "";
+	position: absolute;
+	background-color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .电量:before {
+	right: -2px;
+	width: 2px;
+	height: 50%;
+	border-top-right-radius: 1px;
+	border-bottom-right-radius: 1px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .电量:after {
+	left: 1px;
+	width: 100%;
+	height: 6px;
+	border-radius: 1px;
+	max-width: calc(100% - 2px);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .statusBar .rightSide .exitShake {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 40px;
+	height: 17px;
+	font-size: 10px;
+	font-weight: 600;
+	border-radius: 20px;
+	background-color: rgba(255, 255, 255, 0.5);
+	transform: scale(0);
+	overflow: hidden;
+	cursor: pointer;
+	transition: ease all 0.2s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	align-content: center;
+	position: absolute;
+	width: 100%;
+	height: calc(100% - 25px);
+	padding: 30px;
+	box-sizing: border-box;
+	cursor: grab;
+	transition: ease all 0.4s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen.hidden {
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-50%);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen:hover .unlockBar {
+	opacity: 1;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen .up {
+	color: #fff;
+	text-align: center;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen .up .lockIcon {
+	width: 18px;
+	height: 14px;
+	margin: 10px auto 5px auto;
+	border-radius: 2px;
+	background-color: #fff;
+	position: relative;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen .up .lockIcon:before {
+	content: "";
+	position: absolute;
+	top: -10px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	width: 10px;
+	height: 20px;
+	border-radius: 10px;
+	border: 2px solid #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen .up .时间 {
+	font-size: 60px;
+	font-weight: 300;
+	text-shadow: 2px 2px 5px #000;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen .up .日期 {
+	font-size: 14px;
+	text-shadow: 1px 1px 3px #000;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen .down {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	align-content: center;
+	width: 100%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen .down .sysIcon {
+	width: 20px;
+	height: 20px;
+	padding: 10px;
+	border-radius: 50%;
+	background-color: rgba(0, 0, 0, 0.5);
+	color: #fff;
+	cursor: pointer;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen .down .sysIcon svg {
+	width: 100%;
+	height: 100%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen .down .sysIcon svg path,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen .down .sysIcon svg circle {
+	fill: currentColor;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen .unlockBar {
+	position: absolute;
+	bottom: 8px;
+	width: 40%;
+	height: 4px;
+	border-radius: 20px;
+	background-color: rgba(255, 255, 255, 0.7);
+	opacity: 0;
+	transition: ease all 0.2s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen .unlockBar:hover:before {
+	opacity: 1;
+	transform: none;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .lockScreen .unlockBar:before {
+	content: attr(data-msj);
+	position: absolute;
+	bottom: 100%;
+	left: 0;
+	right: 0;
+	max-width: 100px;
+	margin: 0 auto;
+	padding-bottom: 5px;
+	color: #fff;
+	font-size: 10px;
+	text-align: center;
+	opacity: 0;
+	transform: translateY(5px);
+	transition: ease all 0.1s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	align-content: center;
+	position: absolute;
+	width: 100%;
+	height: calc(100% - 25px);
+	padding: 10px;
+	box-sizing: border-box;
+	cursor: grab;
+	transition: ease all 0.4s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen.moveOut {
+	transition-duration: 0.2s;
+	transform: translateX(100%);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen.hidden {
+	opacity: 0;
+	visibility: hidden;
+	transform: scale(1.5);
+}
+/*------------------------------------------------------------- Apps */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .app {
+	width: 80px;
+	position: relative;
+	cursor: pointer;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .app .通知,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .app .removeApp {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	position: absolute;
+	top: -3px;
+	right: 6px;
+	width: 18px;
+	height: 18px;
+	color: #fff;
+	font-size: 10px;
+	border-radius: 50%;
+	background-color: #de4046;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .app .removeApp {
+	left: 0;
+	right: auto;
+	background-color: #e6f2ff;
+	cursor: pointer;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .app .removeApp:after {
+	content: "";
+	position: absolute;
+	width: 50%;
+	height: 1px;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .app .应用图标 {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 50px;
+	height: 50px;
+	margin: 3px auto;
+	border-radius: 10px;
+	background-color: #fff;
+	overflow: hidden;
+}
+/*-------------------------------------------------------------- App名 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .app .应用名 {
+	height: 15px;
+	color: white;
+	font-size: 12px;
+	text-align: center;
+	margin-bottom: 7px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+/*--------------------------------------------------------------- Main Apps */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .mainApps {
+	width: 100%;
+	max-width: 326px;
+	height: calc(100% - 25px - 85px);
+	margin: 0 auto;
+	overflow: hidden;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .wrapperApps {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: flex-start;
+	align-content: center;
+	width: 100%;
+	height: 100%;
+	transition: ease all 0.2s;
+}
+/* grupo */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .wrapperApps .grupo {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	justify-content: flex-start;
+	align-content: flex-start;
+	width: 100%;
+	height: 100%;
+	min-width: 100%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .wrapperApps .grupo .app {
+	height: 76px;
+}
+/* 76-96 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .wrapperApps .grupo .app.widgetFull {
+	width: 100%;
+	height: calc(96px * 2);
+}
+/* 26-36 */
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.widgetFull
+	.应用图标 {
+	width: 295px;
+	height: calc(100% - 36px);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app[data-app="widgetFull日历"]
+	.应用图标 {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	padding: 10px;
+	box-sizing: border-box;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app[data-app="widgetFull日历"]
+	.应用图标
+	.eventos {
+	width: calc(100% - 112px);
+	font-size: 12px;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app[data-app="widgetFull日历"]
+	.应用图标
+	.日历Wrapper {
+	width: 112px;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app[data-app="widgetFull日历"]
+	.应用图标
+	.日历Wrapper
+	.mes
+	.mesName {
+	color: #d24f54;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app[data-app="widgetFull日历"]
+	.应用图标
+	.日历Wrapper
+	.mes
+	.日历Tabla
+	.tablaHeader,
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app[data-app="widgetFull日历"]
+	.应用图标
+	.日历Wrapper
+	.mes
+	.日历Tabla
+	.tablaContent {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-start;
+	align-content: center;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app[data-app="widgetFull日历"]
+	.应用图标
+	.日历Wrapper
+	.mes
+	.日历Tabla
+	.tablaHeader
+	> *,
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app[data-app="widgetFull日历"]
+	.应用图标
+	.日历Wrapper
+	.mes
+	.日历Tabla
+	.tablaContent
+	> * {
+	width: 16px;
+	text-align: center;
+	font-size: 10px;
+	font-weight: 600;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app[data-app="widgetFull日历"]
+	.应用图标
+	.日历Wrapper
+	.mes
+	.日历Tabla
+	.tablaHeader {
+	margin: 10px auto;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app[data-app="widgetFull日历"]
+	.应用图标
+	.日历Wrapper
+	.mes
+	.日历Tabla
+	.tablaContent
+	.diaNum {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	height: 16px;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app[data-app="widgetFull日历"]
+	.应用图标
+	.日历Wrapper
+	.mes
+	.日历Tabla
+	.tablaContent
+	.diaNum.active {
+	color: #fff;
+	background-color: #d24f54;
+	border-radius: 50%;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.日历动态
+	.日期Wrapper {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 100%;
+	height: 100%;
+	padding: 5px;
+	box-sizing: border-box;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.日历动态
+	.日期Wrapper
+	.diaNom {
+	color: #d24f54;
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.日历动态
+	.日期Wrapper
+	.diaNum {
+	color: #000;
+	font-size: 22px;
+	font-weight: 300;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 100%;
+	height: 100%;
+	padding: 3px;
+	background-color: #000;
+	box-sizing: border-box;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟 {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	background-color: #fff;
+	position: relative;
+	overflow: hidden;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero {
+	position: absolute;
+	bottom: 50%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	width: 10px;
+	height: calc(50% - 1px);
+	color: #000;
+	font-size: 5px;
+	font-weight: 600;
+	text-align: center;
+	transform-origin: bottom;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(1) {
+	transform: rotate(30deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(1):before {
+	transform: rotate(-30deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(2) {
+	transform: rotate(60deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(2):before {
+	transform: rotate(-60deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(3) {
+	transform: rotate(90deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(3):before {
+	transform: rotate(-90deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(4) {
+	transform: rotate(120deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(4):before {
+	transform: rotate(-120deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(5) {
+	transform: rotate(150deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(5):before {
+	transform: rotate(-150deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(6) {
+	transform: rotate(180deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(6):before {
+	transform: rotate(-180deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(7) {
+	transform: rotate(210deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(7):before {
+	transform: rotate(-210deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(8) {
+	transform: rotate(240deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(8):before {
+	transform: rotate(-240deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(9) {
+	transform: rotate(270deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(9):before {
+	transform: rotate(-270deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(10) {
+	transform: rotate(300deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(10):before {
+	transform: rotate(-300deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(11) {
+	transform: rotate(330deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(11):before {
+	transform: rotate(-330deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(12) {
+	transform: rotate(360deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:nth-child(12):before {
+	transform: rotate(-360deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.numeros
+	.numero:before {
+	content: attr(data-num);
+	display: block;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.指针s:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: auto;
+	width: 3px;
+	height: 3px;
+	border-radius: 50%;
+	background-color: #000;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.指针s
+	.指针 {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.指针s
+	.指针.时间
+	.bar {
+	animation-duration: 21600s;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.指针s
+	.指针.时间
+	.bar:before {
+	height: calc(50% - 10px);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.指针s
+	.指针.时分
+	.bar {
+	animation-duration: 3600s;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.指针s
+	.指针.时秒
+	.bar:before {
+	background-color: #d24f54;
+	bottom: 40%;
+	height: calc(60% - 4px);
+	animation-duration: 60s;
+	animation-timing-function: steps(60);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.指针s
+	.指针
+	.bar {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	animation: 时钟Analogico 60s infinite linear;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.appScreen
+	.wrapperApps
+	.grupo
+	.app.时钟动态
+	.时钟Wrapper
+	.时钟
+	.指针s
+	.指针
+	.bar:before {
+	content: "";
+	position: absolute;
+	bottom: 50%;
+	left: 0;
+	right: 0;
+	margin: auto;
+	width: 1px;
+	height: calc(50% - 4px);
+	background-color: #000;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .wrapperDots {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .wrapperDots .dot {
+	width: 8px;
+	height: 8px;
+	margin: 5px;
+	border-radius: 50%;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .wrapperDots .dot.active {
+	background-color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .appScreen .deckApps {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 100%;
+	padding: 10px 5px;
+	border-radius: 25px;
+	background-color: rgba(255, 255, 255, 0.3);
+	box-sizing: border-box;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-start;
+	align-content: center;
+	position: absolute;
+	width: 100%;
+	height: calc(100% - 25px);
+	padding: 10px;
+	box-sizing: border-box;
+	cursor: grab;
+	transition: ease all 0.2s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter.hidden {
+	transform: translateX(-100%);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: stretch;
+	justify-content: space-between;
+	align-content: center;
+	width: 100%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .block {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 100%;
+	padding: 10px;
+	border-radius: 15px;
+	box-sizing: border-box;
+	background-color: rgba(255, 255, 255, 0.5);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .block:not(:first-child) {
+	margin-top: 15px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .block.midd {
+	width: 48%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .actions .action {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 100%;
+	padding: 10px 0;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .actions .action:first-child {
+	padding-top: 0;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .actions .action:last-child {
+	padding-bottom: 0;
+	border: 0;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .actions .action .应用图标 {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 40px;
+	height: 40px;
+	margin-right: 5px;
+	border-radius: 10px;
+	background-color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .actions .action .textos {
+	width: calc(100% - 45px);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .actions .action .textos p {
+	font-size: 10px;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.widgetCenter
+	.contenido
+	.actions
+	.action
+	.textos
+	p.actionName {
+	color: #000;
+	font-size: 11px;
+	font-weight: 600;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .eventos {
+	flex-direction: column-reverse;
+	align-items: flex-start;
+	background-color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .eventos .txt {
+	padding: 15px 0;
+	font-size: 12px;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.widgetCenter
+	.contenido
+	.eventos
+	.日期Wrapper
+	.diaNom {
+	color: #d24f54;
+	font-size: 10px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.widgetCenter
+	.contenido
+	.eventos
+	.日期Wrapper
+	.diaNum {
+	color: #000;
+	font-size: 22px;
+	font-weight: 300;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .电量Info {
+	flex-direction: column;
+	align-items: flex-start;
+	align-content: flex-start;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .电量Info:after {
+	content: attr(data-carga) "%";
+	color: #000;
+	font-size: 30px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .电量Info .应用图标Wrapper {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 35px;
+	height: 35px;
+	border-radius: 50%;
+	margin-bottom: 20px;
+	border: 3px solid rgba(0, 0, 0, 0.3);
+	position: relative;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.widgetCenter
+	.contenido
+	.电量Info
+	.应用图标Wrapper:after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	border: 3px solid #67ba6e;
+	border-left-color: transparent;
+	border-top-color: transparent;
+	transform: rotate(-35deg);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.widgetCenter
+	.contenido
+	.电量Info
+	.应用图标Wrapper
+	svg {
+	width: 20px;
+	height: 20px;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.widgetCenter
+	.contenido
+	.电量Info
+	.应用图标Wrapper
+	svg
+	path,
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.widgetCenter
+	.contenido
+	.电量Info
+	.应用图标Wrapper
+	svg
+	circle {
+	fill: none;
+	stroke: #1b1b1b;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .tiempoPantalla {
+	justify-content: space-between;
+	background-color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .tiempoPantalla .timepo {
+	width: 100%;
+	color: #000;
+	font-size: 20px;
+	text-align: left;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .tiempoPantalla .app {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 48%;
+	margin-top: 10px;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.widgetCenter
+	.contenido
+	.tiempoPantalla
+	.app
+	.应用图标 {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 30px;
+	height: 30px;
+	margin-right: 5px;
+	border-radius: 7px;
+	background-color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .tiempoPantalla .app .textos {
+	width: calc(100% - 35px);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.widgetCenter
+	.contenido
+	.tiempoPantalla
+	.app
+	.textos
+	p {
+	font-size: 10px;
+	color: rgba(0, 0, 0, 0.3);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.widgetCenter
+	.contenido
+	.tiempoPantalla
+	.app
+	.textos
+	p.actionName {
+	color: #000;
+	font-size: 11px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetCenter .contenido .editButton {
+	margin: 20px auto 0 auto;
+	padding: 4px 12px;
+	color: #000;
+	font-size: 12px;
+	border-radius: 20px;
+	background-color: rgba(255, 255, 255, 0.5);
+	cursor: not-allowed;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetScreen {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: flex-end;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.3);
+	transition: ease transform 0.2s, ease background-color 0.3s 0.2s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetScreen.hidden {
+	transform: translateY(100%);
+	background-color: transparent;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetScreen.hidden .wrapper:before {
+	opacity: 0;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetScreen .wrapper {
+	background-color: #eeeeee;
+	width: 100%;
+	height: 90%;
+	padding: 10px 20px;
+	border-radius: 25px;
+	position: relative;
+	box-sizing: border-box;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetScreen .wrapper:before {
+	content: "";
+	position: absolute;
+	left: 50%;
+	width: 30px;
+	height: 4px;
+	border-radius: 20px;
+	background-color: #b2b2b2;
+	transform: translateX(-50%);
+	transition: ease all 0.5s 0.5s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetScreen .wrapper .buscador {
+	color: #666;
+	background-color: #e2e2e2;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetScreen .wrapper .widgetWrapper {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	align-content: center;
+	width: 100%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetScreen .wrapper .widgetWrapper .widget {
+	width: 48%;
+	margin-bottom: 15px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetScreen .wrapper .widgetWrapper .widget.full {
+	width: 100%;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.widgetScreen
+	.wrapper
+	.widgetWrapper
+	.widget
+	.preview {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 100%;
+	min-height: 110px;
+	padding: 10px;
+	border-radius: 20px;
+	background-color: #fff;
+	box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.1);
+	box-sizing: border-box;
+}
+/*----------------------------------------------------------- 小组件 */
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.widgetScreen
+	.wrapper
+	.widgetWrapper
+	.widget
+	.preview:before {
+	content: "这里应该放一个小组件，但我还没有完成。";
+	display: block;
+	width: 100%;
+	font-size: 10px;
+	text-align: center;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .widgetScreen .wrapper .widgetWrapper .widget .应用名 {
+	margin-top: 5px;
+	color: #000;
+	font-size: 10px;
+	text-align: center;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	backdrop-filter: blur(15px);
+	cursor: grab;
+	transition: cubic-bezier(0.68, -0.55, 0.27, 1.55) all 0.5s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter.hidden {
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	transform: translateY(-100px);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	align-content: center;
+	width: 100%;
+	padding: 10px 20px;
+	box-sizing: border-box;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconWrapper-wX2 {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	align-content: space-between;
+	width: 120px;
+	height: 120px;
+	margin-bottom: 20px;
+	border-radius: 20px;
+	color: #fff;
+	box-sizing: border-box;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconWrapper-wX2.padding {
+	padding: 10px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconItem {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 25px;
+	height: 25px;
+	padding: 15px;
+	margin-bottom: 10px;
+	border-radius: 15px;
+	background-color: rgba(0, 0, 0, 0.5);
+	position: relative;
+	cursor: pointer;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconItem.full {
+	width: 100%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconItem.lampara.active {
+	background-color: rgba(255, 255, 255, 0.9);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconItem.lampara.active svg {
+	color: #3777e4;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.iconItem.grabarPantalla.active {
+	background-color: rgba(255, 255, 255, 0.9);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.iconItem.grabarPantalla.active
+	svg {
+	color: red;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.iconItem.grabarPantalla.active
+	svg
+	circle.filled {
+	transform-origin: center;
+	animation: grabarPantalla 1s linear infinite;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconItem svg {
+	width: 25px;
+	height: 25px;
+	min-width: 25px;
+	color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconItem svg path,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconItem svg circle,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconItem svg rect {
+	stroke: currentColor;
+	fill: none;
+	stroke-width: 2;
+	stroke-miterlimit: 10;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconItem svg path.filled,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconItem svg circle.filled,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconItem svg rect.filled {
+	stroke: none;
+	fill: currentColor;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconsGroup {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconsGroup .icon {
+	cursor: pointer;
+	margin: 5px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconsGroup .icon.active .ico {
+	background-color: #3777e4;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.iconsGroup
+	.icon.modoVuelo.active
+	.ico {
+	background-color: #ff8e00;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.iconsGroup
+	.icon.datosCelulares.active
+	.ico {
+	background-color: #00dc54;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconsGroup .icon .ico {
+	width: 16px;
+	height: 16px;
+	padding: 12px;
+	border-radius: 50%;
+	background-color: rgba(255, 255, 255, 0.5);
+	transition: ease all 0.3s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconsGroup .icon .ico svg {
+	width: 100%;
+	height: 100%;
+	color: #fff;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.iconsGroup
+	.icon
+	.ico
+	svg
+	path {
+	fill: currentColor;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .iconsGroup .icon .txt {
+	display: none;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .musicWdg {
+	align-content: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.5);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .musicWdg p {
+	text-align: center;
+	font-size: 14px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .musicWdg p.artistName {
+	font-size: 12px;
+	color: rgba(255, 255, 255, 0.5);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .musicWdg .icons {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	align-content: center;
+	width: 100%;
+	margin-top: 20px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .musicWdg .icons .icon {
+	width: 20px;
+	height: 20px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .musicWdg .icons .icon svg {
+	width: 100%;
+	height: 100%;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.musicWdg
+	.icons
+	.icon
+	svg
+	path {
+	fill: currentColor;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .displayOptions .actionIcon {
+	transition: ease all 0.3s;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.displayOptions
+	.actionIcon.active {
+	background-color: rgba(255, 255, 255, 0.9);
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.displayOptions
+	.actionIcon.active.lockOrientacion
+	.lockIcon {
+	background-color: #d24f54;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.displayOptions
+	.actionIcon.active.lockOrientacion
+	.lockIcon:before {
+	border-color: #d24f54;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.displayOptions
+	.actionIcon.active.lockOrientacion
+	svg {
+	color: #d24f54;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .displayOptions .lockIcon {
+	position: absolute;
+	width: 8px;
+	height: 6px;
+	border-radius: 2px;
+	background-color: #fff;
+	margin-right: 2px;
+	margin-top: 4px;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.displayOptions
+	.lockIcon:before {
+	content: "";
+	position: absolute;
+	top: -4px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	width: 2px;
+	height: 6px;
+	border-radius: 10px;
+	border: 2px solid #fff;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.displayOptions
+	.moon.active
+	svg
+	path {
+	fill: #7c517c;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.displayOptions
+	.moon
+	svg
+	path {
+	fill: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .displayOptions .duplicate {
+	flex-wrap: nowrap;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .displayOptions .duplicate p {
+	font-size: 10px;
+	margin-left: 10px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .fullBars .fullBar {
+	align-content: flex-end;
+	height: calc(100% - 30px);
+	overflow: hidden;
+	cursor: default;
+}
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.fullBars
+	.fullBar.volumen:before {
+	height: 45%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .fullBars .fullBar:before {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(255, 255, 255, 0.9);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .fullBars .fullBar svg {
+	color: rgba(0, 0, 0, 0.4);
+	position: relative;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .textGroup {
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+	margin-bottom: 20px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .textGroup .应用图标 {
+	width: 25px;
+	height: 25px;
+	margin: 10px auto;
+	color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .textGroup .应用图标 svg {
+	width: 100%;
+	height: 100%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .textGroup .应用图标 svg path,
+.iphone模拟
+	.container
+	.iphone
+	.bordeColor
+	.黑色边框
+	.mainScreen
+	.controlCenter
+	.content
+	.textGroup
+	.应用图标
+	svg
+	circle {
+	fill: none;
+	stroke-width: 2;
+	stroke: currentColor;
+	stroke-linecap: round;
+	stroke-miterlimit: 10;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .content .textGroup .link {
+	display: inline-block;
+	margin-top: 5px;
+	color: #3777e4;
+	cursor: pointer;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .hiddenCC {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 25px;
+	text-align: center;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .controlCenter .hiddenCC:before {
+	content: "";
+	display: inline-block;
+	width: 150px;
+	height: 4px;
+	border-radius: 20px;
+	background-color: rgba(255, 255, 255, 0.7);
+}
+/* -----------------------------------------------------------------------------------------------相机App */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App {
+	background-color: #000;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+	padding-top: 25px;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
+	transition: ease all 0.2s;
+	cursor: grab;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App:hover:after {
+	background-color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App:after {
+	content: "";
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	width: 120px;
+	height: 4px;
+	border-radius: 20px;
+	background-color: rgba(255, 255, 255, 0.1);
+	transform: translateX(-50%);
+	transition: ease all 0.5s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App.hidden {
+	width: 0;
+	height: 0;
+	opacity: 0;
+	border-radius: 50%;
+	pointer-events: none;
+	transition-duration: 0.3s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .camIco {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	background-color: rgba(255, 255, 255, 0.1);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .camIco svg {
+	width: 50%;
+	height: 50%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .camIco svg path {
+	fill: none;
+	stroke: #fff;
+	stroke-width: 4;
+	stroke-miterlimit: 10;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .topBar {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	align-content: flex-start;
+	width: 100%;
+	height: 70px;
+	padding: 0 20px;
+	box-sizing: border-box;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .topBar .chevronUp svg,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .topBar .flash svg,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .topBar .circles svg {
+	width: 160%;
+	height: 160%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .topBar .flash,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .topBar .circles {
+	background-color: transparent;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .相机Area {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 100%;
+	height: 400px;
+	position: relative;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .相机Area:before,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .相机Area:after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .相机Area:before {
+	width: calc(100% / 3);
+	height: 100%;
+	border-left: 1px solid rgba(255, 255, 255, 0.3);
+	border-right: 1px solid rgba(255, 255, 255, 0.3);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .相机Area:after {
+	width: 100%;
+	height: calc(100% / 3);
+	border-top: 1px solid rgba(255, 255, 255, 0.3);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .相机Area video {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .modos相机 {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 100%;
+	height: 30px;
+	overflow: hidden;
+	position: relative;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .modos相机:before,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .modos相机:after {
+	content: "";
+	position: absolute;
+	top: 0;
+	width: 50px;
+	height: 100%;
+	z-index: 1;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .modos相机:before {
+	left: 0;
+	background: linear-gradient(90deg, #000, transparent);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .modos相机:after {
+	right: 0;
+	background: linear-gradient(90deg, transparent, #000);
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .modos相机 .modo {
+	min-width: max-content;
+	margin: 0 10px;
+	color: #fff;
+	font-size: 18px; /* debug */
+	text-transform: uppercase;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .modos相机 .modo.active {
+	color: #a69c5e;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .obturadorArea {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 50px; /* debug */
+	align-content: center;
+	width: 100%;
+	padding: 10px 20px;
+	box-sizing: border-box;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .obturadorArea .imgPreview {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	width: 40px;
+	height: 40px;
+	border-radius: 3px;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .obturadorArea .obturador {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	align-content: center;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background-color: #fff;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .obturadorArea .obturador:before {
+	content: "";
+	width: calc(100% - 8px);
+	height: calc(100% - 8px);
+	border: 1px solid #000;
+	border-radius: 50%;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .相机App .obturadorArea .camIco {
+	width: 30px;
+	height: 30px;
+}
+.iphone模拟 .container .iphone .logo {
+	width: 80px;
+	height: 80px;
+	position: relative;
+}
+.iphone模拟 .container .iphone .logo svg {
+	width: 100%;
+	height: 100%;
+	color: rgba(0, 0, 0, 0.3);
+}
+.iphone模拟 .container .iphone .logo svg path {
+	fill: currentColor;
+}
+@media only screen and (max-width: 700px) {
+	.iphone模拟 .container .交互元素 p,
+	.iphone模拟 .container .交互元素 h1 {
+		text-align: center;
+	}
+	.iphone模拟 .container .交互元素 .按钮es {
+		flex-direction: column;
+		justify-content: center;
+	}
+	.iphone模拟 .container .交互元素 .按钮es .按钮 {
+		margin-right: 0;
+		margin-bottom: 20px;
+	}
+}
+
+/* -------------------------------------------------------------------------------------------------------------------APP全局变量 */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes shrink {
+	from {
+		transform: scale(1);
+	}
+	to {
+		transform: scale(0);
+	}
+}
+
+/* ---------------------------------------------------------------------------------------------照片App */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .照片app {
+	background-color: #e0c78e;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+	padding-top: 25px;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
+	animation: fadeIn 1s;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .照片app .topBar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 10px;
+	height: 36px;
+	font-size: 16px;
+	background-color: #f7f7f7;
+	border-bottom: 1px solid #ddd;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .照片app.hidden {
+	animation: shrink 1s;
+	animation-fill-mode: forwards;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .照片app .topBar .backButton {
+	cursor: pointer;
+	color: #007aff;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .照片app .照片Area {
+	padding: 10px;
+	box-sizing: border-box;
+	width: 100%;
+	height: calc(100% - 50px);
+	overflow-y: auto;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .照片app .照片Area img.fullScreen {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	animation: fadeIn 1s;
+}
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .照片app .topBar .importButton {
+	cursor: pointer;
+	color: #007aff;
+}
+/*-------------------------------------------------------------------------------------------- 主部件 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen {
+}
+
+/* ---------------------------------------------------------------------------------------------------------------APPs */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .EasyChess {
+	background-color: #e0c78e;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+	padding-top: 25px;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
+	animation: fadeIn 1s;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .EasyChess .topBar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 10px;
+	height: 36px;
+	font-size: 16px;
+	background-color: #f7f7f7;
+	border-bottom: 1px solid #ddd;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .EasyChess.hidden {
+	animation: shrink 1s;
+	animation-fill-mode: forwards;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .EasyChess .topBar .backButton {
+	cursor: pointer;
+	color: #007aff;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .EasyChess .EasyChessFrame {
+	width: 100%;
+	height: calc(100% - 36px);
+	border: none;
+}
+/*------------------------------------------------------------------------------------------------音乐 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .音乐 {
+	background-color: #e0c78e;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+	padding-top: 25px;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
+	animation: fadeIn 1s;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .音乐 .topBar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 10px;
+	height: 36px;
+	font-size: 16px;
+	background-color: #f7f7f7;
+	border-bottom: 1px solid #ddd;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .音乐.hidden {
+	animation: shrink 1s;
+	animation-fill-mode: forwards;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .音乐 .topBar .backButton {
+	cursor: pointer;
+	color: #007aff;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .音乐 .音乐Frame {
+	width: 100%;
+	height: calc(100% - 36px);
+	border: none;
+}
+/*------------------------------------------------------------------------------------------------黑白棋 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .黑白棋 {
+	background-color: #e0c78e;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+	padding-top: 25px;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
+	animation: fadeIn 1s;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .黑白棋 .topBar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 10px;
+	height: 36px;
+	font-size: 16px;
+	background-color: #f7f7f7;
+	border-bottom: 1px solid #ddd;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .黑白棋.hidden {
+	animation: shrink 1s;
+	animation-fill-mode: forwards;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .黑白棋 .topBar .backButton {
+	cursor: pointer;
+	color: #007aff;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .黑白棋 .黑白棋Frame {
+	width: 100%;
+	height: calc(100% - 36px);
+	border: none;
+}
+/*------------------------------------------------------------------------------------------------扫雷 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .扫雷 {
+	background-color: #e0c78e;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+	padding-top: 25px;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
+	animation: fadeIn 1s;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .扫雷 .topBar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 10px;
+	height: 36px;
+	font-size: 16px;
+	background-color: #f7f7f7;
+	border-bottom: 1px solid #ddd;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .扫雷.hidden {
+	animation: shrink 1s;
+	animation-fill-mode: forwards;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .扫雷 .topBar .backButton {
+	cursor: pointer;
+	color: #007aff;
+}
+
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .扫雷 .扫雷Frame {
+	width: 100%;
+	height: calc(100% - 36px);
+	border: none;
+}
+
+/*------------------------------------------------------------------------------------------------视频 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .videoApp {
+	background-color: #e0c78e;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	margin: auto;
+	padding-top: 25px;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
+	animation: fadeIn 1s;
+}
+
+/* 视频App顶部栏样式 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .videoApp .topBar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 10px;
+	height: 36px;
+	font-size: 16px;
+	background-color: #f7f7f7;
+	border-bottom: 1px solid #ddd;
+}
+
+/* 当.videoApp被隐藏时 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .videoApp.hidden {
+	animation: shrink 1s;
+	animation-fill-mode: forwards;
+}
+
+/* 视频App返回按钮样式 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .videoApp .topBar .backButton {
+	cursor: pointer;
+	color: #007aff;
+}
+
+/* 视频App的iframe样式 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .videoApp .videoFrame {
+	width: 100%;
+	height: calc(100% - 36px);
+	border: none;
+}

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>踩地雷</title>
+		<style>
+			table {
+				border-collapse: collapse;
+			}
+
+			td {
+				width: 22px;
+				height: 22px;
+				text-align: center;
+				background-color: antiquewhite;
+				font-family: Arial, sans-serif;
+				color: #333;
+				border-radius: 3px;
+				box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+				animation: fadein 2s;
+			}
+
+			@keyframes fadein {
+				from {
+					opacity: 0;
+				}
+				to {
+					opacity: 1;
+				}
+			}
+
+			td svg {
+				width: 16px;
+				height: 16px;
+				fill: #333;
+			}
+
+			#game-over,
+			#game-win {
+				display: none;
+			}
+
+			button {
+				width: 200px;
+				height: 40px;
+				background-color: aqua;
+				margin-bottom: 20px;
+				border-radius: 5px;
+				cursor: pointer;
+				font-weight: bold;
+				font-size: 16px;
+				transition: background-color 1s ease;
+				border: none;
+			}
+
+			button:hover {
+				background-color: lightpink;
+			}
+		</style>
+	</head>
+
+	<body>
+		<p>
+			计时器：
+			<span id="timer">0</span>
+		</p>
+		<p>
+			地雷剩余：
+			<span id="mines-remaining">0</span>
+		</p>
+		<div id="difficulty">
+			<p>请选择难度：</p>
+			<button onclick="startGame(9, 8)">简单</button>
+			中奖概率：10%
+			<br />
+			<button onclick="startGame(12, 18)">中等</button>
+			中奖概率：12.5%
+			<br />
+			<button onclick="startGame(15, 34)">困难</button>
+			中奖概率：15%
+			<br />
+			<button onclick="startGame(15, 56)">噩梦</button>
+			中奖概率：25%
+		</div>
+		<div id="game-over">
+			<p>游戏结束！</p>
+			<button onclick="restart()">重新开始</button>
+		</div>
+		<div id="game-win">
+			<p>挑战成功！</p>
+			<button onclick="restart()">重新开始</button>
+		</div>
+		<table id="grid"></table>
+		<div id="rules">
+			<p>游戏规则：</p>
+			<ul>
+				<li>左键扫雷。</li>
+				<li>右键标记或取消🚩。</li>
+				<li>当所有地雷都正确被🚩标记时，游戏胜利。</li>
+				<li>绿色区域是绝对安全区，好好利用它！</li>
+			</ul>
+		</div>
+
+		<script>
+			let SIZE;
+			let MINES;
+			let grid = document.getElementById("grid");
+			let cells = [];
+			let minePositions = [];
+			let clickedCells = 0;
+			let flaggedCells = 0;
+
+			let timer = 0;
+			let timerInterval;
+
+			function startGame(size, mines) {
+				SIZE = size;
+				MINES = mines;
+				document.getElementById("difficulty").style.display = "none";
+				for (let i = 0; i < SIZE; i++) {
+					let row = document.createElement("tr");
+					grid.appendChild(row);
+					cells[i] = [];
+					for (let j = 0; j < SIZE; j++) {
+						let cell = document.createElement("td");
+						row.appendChild(cell);
+						cells[i][j] = cell;
+						cell.addEventListener("click", () => clickCell(i, j));
+						cell.addEventListener("contextmenu", (e) => {
+							e.preventDefault();
+							if (cell.textContent === "") {
+								cell.textContent = "🚩";
+								flaggedCells++;
+								checkWin();
+							} else if (cell.textContent === "🚩") {
+								cell.textContent = "";
+								flaggedCells--;
+							}
+							document.getElementById("mines-remaining").textContent =
+								MINES - flaggedCells;
+						});
+					}
+				}
+				while (minePositions.length < MINES) {
+					let x = Math.floor(Math.random() * SIZE);
+					let y = Math.floor(Math.random() * SIZE);
+					if (!minePositions.some((pos) => pos[0] === x && pos[1] === y)) {
+						minePositions.push([x, y]);
+					}
+				}
+
+				document.getElementById("mines-remaining").textContent = MINES;
+
+				timer = 0;
+				clearInterval(timerInterval);
+				timerInterval = setInterval(() => {
+					timer++;
+					document.getElementById("timer").textContent = timer;
+				}, 1000);
+			}
+
+			function clickCell(x, y) {
+				if (cells[x][y].textContent !== "") return;
+				if (minePositions.some((pos) => pos[0] === x && pos[1] === y)) {
+					clearInterval(timerInterval);
+					document.getElementById("game-over").style.display = "block";
+				} else {
+					let mines = 0;
+					for (let dx = -1; dx <= 1; dx++) {
+						for (let dy = -1; dy <= 1; dy++) {
+							let nx = x + dx;
+							let ny = y + dy;
+							if (nx >= 0 && nx < SIZE && ny >= 0 && ny < SIZE) {
+								if (
+									minePositions.some((pos) => pos[0] === nx && pos[1] === ny)
+								) {
+									mines++;
+								}
+							}
+						}
+					}
+					if (mines === 0) {
+						cells[x][y].style.backgroundColor = "lightgreen";
+						for (let dx = -1; dx <= 1; dx++) {
+							for (let dy = -1; dy <= 1; dy++) {
+								let nx = x + dx;
+								let ny = y + dy;
+								if (nx >= 0 && nx < SIZE && ny >= 0 && ny < SIZE) {
+									clickCell(nx, ny);
+								}
+							}
+						}
+					} else {
+						cells[x][y].textContent = mines;
+					}
+
+					clickedCells++;
+					checkWin();
+				}
+			}
+
+			function checkWin() {
+				if (
+					flaggedCells === MINES &&
+					minePositions.every(([x, y]) => cells[x][y].textContent === "🚩")
+				) {
+					clearInterval(timerInterval);
+					document.getElementById("game-win").style.display = "block";
+				}
+			}
+
+			function restart() {
+				document.getElementById("game-over").style.display = "none";
+				document.getElementById("game-win").style.display = "none";
+				document.getElementById("difficulty").style.display = "block";
+				grid.innerHTML = "";
+				cells = [];
+				minePositions = [];
+				clickedCells = 0;
+				flaggedCells = 0;
+				clearInterval(timerInterval);
+			}
+		</script>
+	</body>
+</html>

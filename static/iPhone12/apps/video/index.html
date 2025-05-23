@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>视频App</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<div class="video-app-container">
+			<div class="video-list">
+				<!-- 以下是视频列表项的示例，您可以按照实际情况来添加或修改 -->
+				<div class="video-item" data-video-src="../../../video/Lilium.mp4">
+					<img class="video-thumbnail" src="./thumbnail/lilium.png" />
+					<h3 class="video-name">Elfen Lied OP - Lilium (Piano)</h3>
+				</div>
+				<div class="video-item" data-video-src="./videos/A Deep Voice - Myuu.mp4">
+					<img class="video-thumbnail" src="./thumbnail/A Deep Voice.png" />
+					<h3 class="video-name">A Deep Voice - Myuu</h3>
+				</div>
+				<div class="video-item" data-video-src="./videos/Collapse - Myuu.mp4">
+					<img class="video-thumbnail" src="./thumbnail/Collapse.png" />
+					<h3 class="video-name">Collapse - Myuu</h3>
+				</div>
+				<div class="video-item" data-video-src="./videos/Elfen Lied - Myuu.mp4">
+					<img class="video-thumbnail" src="./thumbnail/Elfen Lied - Myuu.png" />
+					<h3 class="video-name">Elfen Lied - Myuu</h3>
+				</div>
+				<div class="video-item" data-video-src="./videos/❰Drum & Bass❱ Sappheiros - Fading.mp4">
+					<img class="video-thumbnail" src="./thumbnail/Fading.png" />
+					<h3 class="video-name">Fading - Sappheiros</h3>
+				</div>
+				<div class="video-item" data-video-src="./videos/Realize.mp4">
+					<img class="video-thumbnail" src="./thumbnail/Realize.png" />
+					<h3 class="video-name">Realize</h3>
+				</div>
+				<!-- 更多视频... -->
+			</div>
+			<!-- Video player container -->
+			<div class="video-player" style="display: none">
+				<video id="videoElement" controls></video>
+				<button id="closeVideoPlayer" class="close-btn"><img src="./close.svg" /></button>
+				<button id="screenMirroring" class="screenmirror-btn"><img src="./Screen mirroring.svg" /></button>
+			</div>
+		</div>
+		<script src="script.js"></script>
+	</body>
+</html>

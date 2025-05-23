@@ -1,0 +1,152 @@
+/* 基础重置 */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background-color: #f4f4f4;
+	color: #333;
+}
+
+.video-app-container {
+	max-width: 640px;
+	margin: auto;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+	border-radius: 10px;
+}
+
+.video-list {
+	display: flex;
+	flex-direction: column;
+}
+
+.video-item {
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	border-bottom: 1px solid #eee;
+	transition: background-color 0.3s;
+}
+
+.video-item:hover {
+	background-color: #f9f9f9;
+}
+
+.video-thumbnail {
+	margin-right: 20px;
+	object-fit: cover;
+	border-radius: 4px;
+}
+
+.video-name {
+	font-size: 16px;
+}
+
+.screenmirror-btn,
+.close-btn {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 1001; /* 确保关闭按钮位于视频之上 */
+	border: none;
+	border-radius: 50%;
+	width: 44px;
+	height: 44px;
+	margin: 10px;
+	font-size: 18px;
+	color: #ffffff;
+	background-color: #007bff;
+	box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.screenmirror-btn {
+	top: 10px;
+	left: 10px;
+}
+
+.screenmirror-btn:hover,
+.close-btn:hover {
+	transform: scale(1.1);
+	box-shadow: 0 6px 12px rgba(0, 123, 255, 0.5);
+}
+
+.screenmirror-btn:active,
+.close-btn:active {
+	transform: scale(0.95);
+}
+
+/* 添加一些动画来提升视觉效果 */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+.video-player,
+.video-app-container {
+	animation: fadeIn 0.5s;
+}
+
+.video-player {
+	position: fixed; /* 使用fixed定位使视频播放器全屏显示 */
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;
+	background-color: #000;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	box-sizing: border-box;
+}
+
+.video-player video {
+	width: 100%;
+	height: 100%;
+}
+
+/* 定义背景动画 */
+@keyframes gradientBackground {
+	0% {
+		background-color: #e0c78e;
+	}
+	25% {
+		background-color: #f7f7f7;
+	}
+	50% {
+		background-color: #e0e0e0;
+	}
+	75% {
+		background-color: #c7c7c7;
+	}
+	100% {
+		background-color: #e0c78e;
+	}
+}
+
+/* 应用背景动画到.videoApp */
+body {
+	/* 其他样式保持不变 */
+	animation: fadeIn 1s, gradientBackground 10s infinite; /* 添加背景动画 */
+	background-size: 400% 400%; /* 定义渐变的尺寸 */
+}
+
+/* 更新fadeIn动画为只改变透明度 */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}

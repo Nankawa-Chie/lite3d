@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Three.js Scene</title>
+		<style>
+			body {
+				margin: 0;
+				overflow: hidden;
+				background-color: #000;
+			}
+			canvas {
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+		<script type="module" src="modules/RoomModule.js"></script>
+		<script>
+			let scene, camera, renderer;
+			let room;
+			let backWall, leftWall, rightWall, floor, ceiling;
+			let originalBackWallPositions;
+			const clock = new THREE.Clock();
+
+			const textsSet1 = {
+				left: "WHERE",
+				back: "IS MY",
+				right: "HOME",
+			};
+			const textsSet2 = {
+				left: "", // Or keep "WHERE"
+				back: "IT'S BEEN A WHILE\nSINCE YOU FELT RIGHT",
+				right: "", // Or keep "HOME"
+			};
+			let currentTextSet = 1;
+			let textChangeTime = 10; // Change text after 10 seconds
+
+			// Scene dimensions
+			const roomWidth = 20;
+			const roomHeight = 10;
+			const roomDepth = 30; // Increased depth for corridor effect
+			const wallThickness = 0.1; // For visual separation if needed, but planes are fine
+
+			let roomModule;
+
+			function init() {
+				// Scene
+				scene = new THREE.Scene();
+
+				// Camera
+				camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+				camera.position.set(0, roomHeight / 3, (roomDepth / 2) * 0.8); // Positioned inside the corridor entrance
+				camera.lookAt(0, roomHeight / 3, 0);
+
+				// Renderer
+				renderer = new THREE.WebGLRenderer({ antialias: true });
+				renderer.setSize(window.innerWidth, window.innerHeight);
+				renderer.setClearColor(0x000000); // Black background outside the room
+				document.body.appendChild(renderer.domElement);
+
+				// Create room using the module
+				roomModule = new RoomModule.RoomModule(scene, roomWidth, roomHeight, roomDepth, textsSet1, textsSet2);
+				const room = roomModule.createRoom();
+				room.position.x = -25; // Set the position as requested
+				scene.add(room);
+
+				// Lighting (subtle, as the scene is mostly black and white materials)
+				const ambientLight = new THREE.AmbientLight(0xffffff, 0.7); // So text is visible
+				scene.add(ambientLight);
+				// const pointLight = new THREE.PointLight(0xffffff, 0.5, 100);
+				// pointLight.position.set(0, roomHeight / 2, roomDepth / 3);
+				// scene.add(pointLight);
+
+				window.addEventListener("resize", onWindowResize, false);
+				animate();
+			}
+
+			function createGridTexture(width, height, segmentsX, segmentsY, lineColor, backgroundColor, isCeiling = false) {
+				const canvas = document.createElement("canvas");
+				canvas.width = width;
+				canvas.height = height;
+				const ctx = canvas.getContext("2d");
+
+				ctx.fillStyle = backgroundColor;
+				ctx.fillRect(0, 0, width, height);
+
+				ctx.strokeStyle = lineColor;
+				ctx.lineWidth = Math.max(1, Math.min(width, height) / 200); // Responsive line width
+
+				const stepX = width / segmentsX;
+				const stepY = height / segmentsY;
+
+				for (let i = 0; i <= segmentsX; i++) {
+					const x = i * stepX;
+					ctx.beginPath();
+					ctx.moveTo(x, 0);
+					ctx.lineTo(x, height);
+					ctx.stroke();
+				}
+
+				for (let i = 0; i <= segmentsY; i++) {
+					const y = i * stepY;
+					ctx.beginPath();
+					ctx.moveTo(0, y);
+					ctx.lineTo(width, y);
+					ctx.stroke();
+				}
+				return new THREE.CanvasTexture(canvas);
+			}
+
+			function createTextTexture(
+				text,
+				baseTexture,
+				textColor,
+				fontDetails,
+				canvasWidth,
+				canvasHeight,
+				textPlacement = { x: 0.5, y: 0.5, maxWidthFactor: 0.8, rotate: 0 }
+			) {
+				const canvas = document.createElement("canvas");
+				canvas.width = canvasWidth;
+				canvas.height = canvasHeight;
+				const ctx = canvas.getContext("2d");
+
+				// Draw base texture (grid)
+				if (baseTexture && baseTexture.image) {
+					ctx.drawImage(baseTexture.image, 0, 0, canvasWidth, canvasHeight);
+				} else {
+					// Fallback if base texture is not ready or missing (should not happen with proper loading)
+					ctx.fillStyle = "#FFFFFF"; // Default white background
+					ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+				}
+
+				// Text properties
+				ctx.fillStyle = textColor;
+				ctx.font = fontDetails;
+				ctx.textAlign = "center";
+				ctx.textBaseline = "middle";
+
+				const lines = text.split("\n");
+				const lineHeight = parseInt(fontDetails.match(/(\d+)px/)[1]) * 1.2;
+
+				if (textPlacement.rotate) {
+					ctx.save();
+					ctx.translate(canvasWidth * textPlacement.x, canvasHeight * textPlacement.y);
+					ctx.rotate((textPlacement.rotate * Math.PI) / 180);
+					for (let i = 0; i < lines.length; i++) {
+						ctx.fillText(
+							lines[i],
+							0,
+							(i - (lines.length - 1) / 2) * lineHeight,
+							canvasWidth * textPlacement.maxWidthFactor
+						);
+					}
+					ctx.restore();
+				} else {
+					for (let i = 0; i < lines.length; i++) {
+						ctx.fillText(
+							lines[i],
+							canvasWidth * textPlacement.x,
+							canvasHeight * textPlacement.y + (i - (lines.length - 1) / 2) * lineHeight,
+							canvasWidth * textPlacement.maxWidthFactor
+						);
+					}
+				}
+
+				const texture = new THREE.CanvasTexture(canvas);
+				texture.needsUpdate = true;
+				return texture;
+			}
+
+			function createRoom() {
+				room = new THREE.Group();
+				scene.add(room);
+
+				const segments = 10; // Grid segments
+
+				// Textures
+				const wallGridTexture = createGridTexture(512, 512, segments, segments, "#000000", "#FFFFFF"); // Black grid on white
+				const floorGridTexture = createGridTexture(512, 512, segments, segments, "#000000", "#FFFFFF");
+				const ceilingGridTexture = createGridTexture(512, 512, segments, segments, "#FFFFFF", "#000000"); // White grid on black
+
+				// Materials
+				const wallMaterial = new THREE.MeshBasicMaterial({ map: wallGridTexture });
+				const floorMaterial = new THREE.MeshBasicMaterial({ map: floorGridTexture });
+				const ceilingMaterial = new THREE.MeshBasicMaterial({ map: ceilingGridTexture });
+
+				// Floor
+				const floorGeometry = new THREE.PlaneGeometry(roomWidth, roomDepth, segments, segments);
+				floor = new THREE.Mesh(floorGeometry, floorMaterial);
+				floor.rotation.x = -Math.PI / 2;
+				floor.position.y = 0;
+				room.add(floor);
+
+				// Ceiling
+				const ceilingGeometry = new THREE.PlaneGeometry(roomWidth, roomDepth, segments, segments);
+				ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
+				ceiling.rotation.x = Math.PI / 2;
+				ceiling.position.y = roomHeight;
+				room.add(ceiling);
+
+				// Back Wall
+				// More segments for smoother deformation
+				const backWallGeometry = new THREE.PlaneGeometry(roomWidth, roomHeight, segments * 2, segments * 2);
+				backWall = new THREE.Mesh(backWallGeometry, wallMaterial.clone()); // Clone material to allow unique text
+				backWall.position.z = -roomDepth / 2;
+				backWall.position.y = roomHeight / 2;
+				room.add(backWall);
+				// Store original positions for deformation
+				originalBackWallPositions = backWall.geometry.attributes.position.clone();
+
+				// Left Wall
+				const leftWallGeometry = new THREE.PlaneGeometry(roomDepth, roomHeight, segments * 2, segments);
+				leftWall = new THREE.Mesh(leftWallGeometry, wallMaterial.clone());
+				leftWall.rotation.y = Math.PI / 2;
+				leftWall.position.x = -roomWidth / 2;
+				leftWall.position.y = roomHeight / 2;
+				room.add(leftWall);
+
+				// Right Wall
+				const rightWallGeometry = new THREE.PlaneGeometry(roomDepth, roomHeight, segments * 2, segments);
+				rightWall = new THREE.Mesh(rightWallGeometry, wallMaterial.clone());
+				rightWall.rotation.y = -Math.PI / 2;
+				rightWall.position.x = roomWidth / 2;
+				rightWall.position.y = roomHeight / 2;
+				room.add(rightWall);
+			}
+
+			function updateWallTexts(texts) {
+				const textCanvasWidth = 1024; // Higher res for text
+				const textCanvasHeight = 512; // Or square if text is rotated
+				const sideWallCanvasHeight = 1024; // For potentially rotated text on side walls
+
+				const baseFont = "bold 90px Arial, sans-serif"; // Larger base font size
+				const textColor = "#000000"; // Black text
+
+				// Back Wall Text
+				if (texts.back && backWall.material.map) {
+					const baseTextureForBack = createGridTexture(textCanvasWidth, textCanvasHeight, 10, 5, "#000000", "#FFFFFF");
+					backWall.material.map = createTextTexture(
+						texts.back,
+						baseTextureForBack,
+						textColor,
+						baseFont,
+						textCanvasWidth,
+						textCanvasHeight
+					);
+					backWall.material.needsUpdate = true;
+				}
+
+				// Left Wall Text
+				if (texts.left && leftWall.material.map) {
+					// For "WHERE", text is horizontal on a canvas, then mapped to vertical wall
+					const baseTextureForLeft = createGridTexture(
+						textCanvasWidth,
+						sideWallCanvasHeight,
+						10,
+						10,
+						"#000000",
+						"#FFFFFF"
+					);
+					leftWall.material.map = createTextTexture(
+						texts.left,
+						baseTextureForLeft,
+						textColor,
+						baseFont,
+						textCanvasWidth,
+						sideWallCanvasHeight,
+						{ x: 0.5, y: 0.5, maxWidthFactor: 0.9 }
+					);
+					leftWall.material.needsUpdate = true;
+				} else if (!texts.left && leftWall.material.map) {
+					// Clear text if empty
+					leftWall.material.map = createGridTexture(512, 512, 10, 10, "#000000", "#FFFFFF");
+					leftWall.material.needsUpdate = true;
+				}
+
+				// Right Wall Text
+				if (texts.right && rightWall.material.map) {
+					const baseTextureForRight = createGridTexture(
+						textCanvasWidth,
+						sideWallCanvasHeight,
+						10,
+						10,
+						"#000000",
+						"#FFFFFF"
+					);
+					rightWall.material.map = createTextTexture(
+						texts.right,
+						baseTextureForRight,
+						textColor,
+						baseFont,
+						textCanvasWidth,
+						sideWallCanvasHeight,
+						{ x: 0.5, y: 0.5, maxWidthFactor: 0.9 }
+					);
+					rightWall.material.needsUpdate = true;
+				} else if (!texts.right && rightWall.material.map) {
+					// Clear text
+					rightWall.material.map = createGridTexture(512, 512, 10, 10, "#000000", "#FFFFFF");
+					rightWall.material.needsUpdate = true;
+				}
+			}
+
+			function deformBackWall(time) {
+				if (!backWall || !originalBackWallPositions) return;
+
+				const positions = backWall.geometry.attributes.position;
+				const vertex = new THREE.Vector3();
+				const pulseSpeed = 1.5;
+				const maxAmplitude = 0.3; // Subtle deformation
+
+				for (let i = 0; i < positions.count; i++) {
+					vertex.fromBufferAttribute(originalBackWallPositions, i);
+
+					// Normalized coordinates relative to the center of the plane
+					const normalizedX = vertex.x / (roomWidth / 2);
+					const normalizedY = vertex.y / (roomHeight / 2);
+
+					// Create a radial gradient for the effect (stronger at center, fades to edges)
+					const distFromCenter = Math.sqrt(normalizedX * normalizedX + normalizedY * normalizedY);
+					const effectStrength = Math.cos((distFromCenter * Math.PI) / 2); // Strongest at center (1), 0 at edges
+
+					if (effectStrength > 0) {
+						const bulge = Math.sin(time * pulseSpeed) * maxAmplitude * effectStrength;
+						positions.setZ(i, vertex.z + bulge);
+					} else {
+						positions.setZ(i, vertex.z); // No bulge if outside effect radius
+					}
+				}
+				positions.needsUpdate = true;
+			}
+
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize(window.innerWidth, window.innerHeight);
+			}
+
+			let lastTextChangeTimestamp = 0;
+			function animate() {
+				requestAnimationFrame(animate);
+				const elapsedTime = clock.getElapsedTime();
+
+				// Update room using the module
+				if (roomModule) {
+					roomModule.update(elapsedTime, textChangeTime);
+				}
+
+				// Optional: subtle camera movement or room rotation
+				// room.rotation.y += 0.0005;
+
+				renderer.render(scene, camera);
+			}
+
+			init();
+		</script>
+	</body>
+</html>

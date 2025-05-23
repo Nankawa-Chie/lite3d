@@ -1,0 +1,153 @@
+<head>
+	<meta charset="utf-8" />
+	<title>3D Game</title>
+	<style>
+		/* 加载界面背景 */
+		#loading-screen {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.8); /* 半透明黑色背景 */
+			z-index: 9999; /* 确保在最上层 */
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+		}
+
+		/* 进度条容器 */
+		#progress-bar-container {
+			width: 80%;
+			max-width: 600px;
+			background-color: #333; /* 进度条背景色 */
+			border-radius: 10px;
+			overflow: hidden;
+			margin-top: 20px;
+		}
+
+		/* 进度条 */
+		#progress-bar {
+			width: 0%;
+			height: 30px;
+			background-color: #4caf50; /* 进度条颜色 */
+			transition: width 0.3s; /* 动画效果 */
+		}
+
+		/* 进度条文本 */
+		#progress-text {
+			position: absolute;
+			color: white;
+			font-size: 16px;
+			margin-top: 5px;
+		}
+
+		/* 添加加载动画 */
+		#loading-animation {
+			border: 8px solid rgba(255, 255, 255, 0.3);
+			border-top: 8px solid #fff;
+			border-radius: 50%;
+			width: 50px;
+			height: 50px;
+			animation: spin 1s linear infinite;
+		}
+
+		@keyframes spin {
+			0% {
+				transform: rotate(0deg);
+			}
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+	</style>
+</head>
+<body>
+	<div id="loading-screen">
+		<div id="loading-animation"></div>
+		<div id="progress-bar-container">
+			<div id="progress-bar"></div>
+		</div>
+		<div id="progress-text">Loading...</div>
+	</div>
+	<div id="iframeContainer"></div>
+	<div
+		id="player-coordinates"
+		style="
+			position: absolute;
+			left: 3%;
+			bottom: 67%;
+			color: white;
+			background: rgba(0, 0, 0, 0.5);
+			padding: 5px;
+			font-family: Arial, sans-serif;
+		"></div>
+	<button id="fullscreen-button">FullScreen</button>
+	<!-- 操作手册容器 -->
+	<!-- 操作手册 -->
+	<div id="操作手册">
+		<h2>操作说明</h2>
+		<ul>
+			<li>
+				<kbd>W</kbd>
+				<kbd>A</kbd>
+				<kbd>S</kbd>
+				<kbd>D</kbd>
+				: 移动
+			</li>
+			<li>
+				<kbd>Shift</kbd>
+				: 疾跑
+			</li>
+			<li>
+				<kbd>Space</kbd>
+				: 跳跃
+			</li>
+			<li>
+				<kbd>Ctrl</kbd>
+				: 切换第一人称/第三人称视角
+			</li>
+			<li>
+				<kbd>E</kbd>
+				: 开/关门 (靠近门时)
+			</li>
+			<li>
+				<kbd>鼠标右键</kbd>
+				: 锁定视角
+			</li>
+			<li>
+				<kbd>鼠标中键</kbd>
+				: 解锁视角
+			</li>
+			<li>
+				<kbd>Caps Lock</kbd>
+				: 切换行走/奔跑
+			</li>
+		</ul>
+		<button id="操作手册-关闭按钮">不再显示</button>
+	</div>
+	<!-- 自定义Debug面板 -->
+	<div id="custom-debug-panel">
+		<div id="debug-header">
+			<h3 id="debug-title">调试面板</h3>
+			<button id="debug-toggle">▼</button>
+		</div>
+		<div id="debug-content">
+			<!-- 文件夹和控件将通过JavaScript动态添加 -->
+		</div>
+	</div>
+	
+	<!-- 耐力条 -->
+	<div id="stamina-bar-container">
+		<div id="stamina-bar"></div>
+	</div>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/23.1.1/tween.umd.js"
+		integrity="sha512-J8rv5Qz++2kwDP7YUBqxm3LCtPXWghcqXvxPrLrk81E31eMA/tEAjKakXJJDQoy9tj+41+EDYDsD6Xc76lnT7w=="
+		crossorigin="anonymous"
+		referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.6.1/gsap.min.js"></script>
+</body>
