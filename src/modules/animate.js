@@ -372,8 +372,8 @@ function _updateBlockyCharacterAnimation(blockyData, controls, charUpdater) {
     // For this animation, we'll apply transformations to bodyContainer and the thigh pivots.
 
     // Bobbing and Swinging
-    const swingSpeed = isSprinting ? 0.25 : 0.15;
-    const bobAmount = isSprinting ? 0.08 : 0.04;
+    const swingSpeed = isSprinting ? 0.1 : 0.06;
+    const bobAmount = isSprinting ? 0.02 : 0.01;
 
     if (isMoving && isGrounded) {
         // Arm swing
