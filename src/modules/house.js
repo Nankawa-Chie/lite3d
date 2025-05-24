@@ -104,16 +104,43 @@ export function createHouse(scene, world, textureLoader) {
 
 	// --- Door ---
 	// Dimensions from original script
-	const doorWidth = 4;
+	const doorWidth = 2.2; // Changed doorWidth
 	const doorHeight = 4;
-	const doorDepth = 0.1; // Use a small depth for the physics body
-	const doorGeometry = new THREE.BoxGeometry(doorWidth, doorHeight, 0.01); // Make visual mesh very thin
+	const newDoorThickness = 0.15; // New constant for door thickness
+	let doorDepth = newDoorThickness; // Use let if it might be reassigned, or const if not. Assuming const is fine.
+	const doorGeometry = new THREE.BoxGeometry(doorWidth, doorHeight, newDoorThickness); // Use new thickness for visual
 	doorGeometry.setAttribute("uv2", new THREE.Float32BufferAttribute(doorGeometry.attributes.uv.array, 2));
+
+	const uMin = 0.225;
+    const uMax = 0.775;
+    const uvAttribute = doorGeometry.attributes.uv;
+    // Loop for vertex indices 16 to 23 (front and back faces)
+    // Standard BoxGeometry UVs for faces are laid out sequentially.
+    // +Z face (front) might be vertices 16,17,18,19.
+    // -Z face (back) might be vertices 20,21,22,23.
+    for (let vertexIndex = 16; vertexIndex <= 23; vertexIndex++) {
+        let currentU = uvAttribute.getX(vertexIndex);
+        // Check if U is close to 0 (left edge of texture)
+        if (Math.abs(currentU - 0.0) < 0.01) {
+            uvAttribute.setX(vertexIndex, uMin);
+        }
+        // Check if U is close to 1 (right edge of texture)
+        else if (Math.abs(currentU - 1.0) < 0.01) { // Use 'else if' to avoid setting uMax if already set to uMin (e.g. if original U was exactly 0)
+            uvAttribute.setX(vertexIndex, uMax);
+        }
+    }
+    uvAttribute.needsUpdate = true;
+
 	const doorMaterial = new THREE.MeshStandardMaterial({
-		map: textures.doorColor, transparent: true, alphaMap: textures.doorAlpha,
-		aoMap: textures.doorAO, displacementMap: textures.doorHeight,
-		displacementScale: 0.1, normalMap: textures.doorNormal,
-		metalnessMap: textures.doorMetalness, roughnessMap: textures.doorRoughness,
+		map: textures.doorColor,
+    transparent: true, // Re-enable transparency
+    alphaMap: textures.doorAlpha, // Restore alphaMap
+		aoMap: textures.doorAO,
+    displacementMap: textures.doorHeight, // Keep map but scale is 0
+    displacementScale: 0, // Keep displacementScale at 0 for now
+		normalMap: textures.doorNormal,
+		metalnessMap: textures.doorMetalness,
+    roughnessMap: textures.doorRoughness,
 	});
 	door = new THREE.Mesh(doorGeometry, doorMaterial);
 	door.castShadow = true;
@@ -125,7 +152,7 @@ export function createHouse(scene, world, textureLoader) {
 	// Opening bottom y=0 (relative to house base, assuming house base is at y=0)
 	// Opening z=8 (front wall plane)
 	// Pivot Y needs to match door bottom edge. If door height is 4, bottom edge is at y=0.
-	const pivotPosition = new THREE.Vector3(-2, 0, 8.0); // Pivot at bottom-left corner, on the wall plane
+	const pivotPosition = new THREE.Vector3(-1.1, doorHeight / 2, 8.0); // Pivot at bottom-left corner, on the wall plane
 	doorPivot = new THREE.Object3D();
 	doorPivot.name = "DoorPivot";
 	doorPivot.position.copy(pivotPosition);
@@ -134,7 +161,7 @@ export function createHouse(scene, world, textureLoader) {
 	// Position door relative to the pivot
 	// Door's visual center needs to be offset by half its width from the pivot along X
 	// And half its height along Y. Z offset should be minimal (half visual depth).
-	door.position.set(doorWidth / 2, doorHeight / 2, 0.005); // Center the door relative to pivot
+	door.position.set(doorWidth / 2, 0, 0); // Center the door relative to pivot, Z is now 0
 	doorPivot.add(door); // Add door to pivot
 
 	// Door Physics Body
@@ -180,8 +207,6 @@ function handleDoorKeyDown(event) {
 	if (!characterRef || !door || !doorPivot || !doorBody) return;
 
 	if (event.key === 'e' || event.key === 'E') {
-		console.log("E key pressed"); // DEBUG LOG 1
-
 		// Use door pivot for distance check - makes sense for interacting with the hinge area
 		const doorPivotWorldPosition = new THREE.Vector3();
 		doorPivot.getWorldPosition(doorPivotWorldPosition);
@@ -192,13 +217,10 @@ function handleDoorKeyDown(event) {
 		const distance = doorPivotWorldPosition.distanceTo(charPos);
 		const interactionDistance = 5.0; // Increased interaction distance slightly (original was 5)
 
-		console.log(`Distance to door pivot: ${distance.toFixed(2)}`); // DEBUG LOG 2
-
 		if (distance <= interactionDistance) {
-			console.log("Within interaction range. Toggling door..."); // DEBUG LOG 3
 			toggleDoor();
 		} else {
-             console.log("Too far from door."); // DEBUG LOG 4
+             // DEBUG LOG 4 was here, now removed
         }
 	}
 }
@@ -217,23 +239,24 @@ function toggleDoor() {
     // Target Y rotation for the PIVOT (original code rotated 90 deg)
 	const targetRotationY = doorOpen ? 0 : Math.PI / 2; // 90 degrees outwards
 
-	console.log(`Animating door pivot to Y rotation: ${targetRotationY}`); // DEBUG LOG 5
+    currentDoorTween = new TWEEN.Tween(doorPivot.rotation)
+        .to({ y: targetRotationY }, 500) // 500ms duration
+        .onUpdate(() => {
+            if (doorBody && door) {
+                const doorWorldPosition = new THREE.Vector3();
+                door.getWorldPosition(doorWorldPosition);
+                const doorWorldQuaternion = new THREE.Quaternion();
+                door.getWorldQuaternion(doorWorldQuaternion);
+                doorBody.position.copy(doorWorldPosition);
+                doorBody.quaternion.copy(doorWorldQuaternion);
+            }
+        })
+        .onComplete(() => {
+            currentDoorTween = null; // Clear the tween when it's done
+        }); // Semicolon here, .start() is moved
 
-	// --- TEMPORARY DIRECT SET ---
-    doorPivot.rotation.y = targetRotationY;
-    // --- END TEMPORARY ---
-
-    // --- Physics Sync (Still needed even for direct set) ---
-    if (doorBody && door) {
-        // ... (Copy the physics sync code here) ...
-        const doorWorldPosition = new THREE.Vector3();
-        door.getWorldPosition(doorWorldPosition);
-        const doorWorldQuaternion = new THREE.Quaternion();
-        door.getWorldQuaternion(doorWorldQuaternion);
-        doorBody.position.copy(doorWorldPosition);
-        doorBody.quaternion.copy(doorWorldQuaternion);
-    }
-    // --- End Physics Sync ---
+    TWEEN.add(currentDoorTween); // Explicitly add the tween to the default group
+    currentDoorTween.start();    // Now start the tween
 
 	doorOpen = !doorOpen; // Toggle state AFTER starting animation
 }
