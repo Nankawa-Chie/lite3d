@@ -1,4 +1,4 @@
-# MementoMori Modularization 2.5
+# lite3d
 
 一个基于 Three.js 构建的沉浸式 3D 交互世界，融合了现代 Web 技术与丰富的视觉效果。
 
