@@ -44,13 +44,6 @@ const thirdPersonParams = {
 
 let spherical = new THREE.Spherical(thirdPersonParams.distance, Math.PI / 2.5, Math.PI / 8); // phi, theta
 
-// Tank control state (managed here but potentially triggered by interaction module)
-let tankControl = {
-	enabled: false,
-	near: false, // Is player near the tank? (Set externally)
-	distance: 10, // Tank third person distance (can be adjusted)
-};
-
 // Temporary vector for calculations (defined at module level)
 const _worldDirection = new THREE.Vector3(); // <--- 添加这一行定义
 // --- 新增：用于获取角色位置的临时变量 ---
@@ -349,9 +342,8 @@ export function updateControls(deltaTime = 0.016) {
 	if (cameraMode === "first" && controls.isLocked) {
 		// Rotation is handled by PointerLockControls directly modifying camera
 
-		// Ensure character visual rotation matches camera Y rotation ONLY when not in tank control
 		// --- 修改：使用 activeVisual ---
-		if (activeVisual && !tankControl.enabled) {
+		if (activeVisual) {
 			cameraRef.getWorldDirection(_worldDirection);
 			const targetRotationY = Math.atan2(_worldDirection.x, _worldDirection.z);
 			const currentRotationY = activeVisual.rotation.y;
@@ -374,9 +366,8 @@ export function updateControls(deltaTime = 0.016) {
         let forwardOffsetAmount = 0.0; // Default forward offset
         const activeType = getActiveCharacterType();
 
-        if (tankControl.enabled) {
-            headHeight = 2.5; // Tank view higher
-        } else if (activeType === 'MilkAnimated') {
+
+        if (activeType === 'MilkAnimated') {
             headHeight = 1.8; // 使用你觉得合适的 1.8 高度
             forwardOffsetAmount = 0.5; // 设置 MilkAnimated 的前向偏移量
         }
@@ -405,7 +396,7 @@ export function updateControls(deltaTime = 0.016) {
 
 		// Sync Character Visual Rotation (Optional: based on camera horizontal view)
 		// --- 修改：使用 activeVisual ---
-		if (activeVisual && !tankControl.enabled) {
+		if (activeVisual) {
 			const targetRotationY = spherical.theta + Math.PI;
 			const currentRotationY = activeVisual.rotation.y;
 			let deltaRotation = targetRotationY - currentRotationY;
@@ -454,31 +445,6 @@ export function getCurrentSpeed() {
  */
 export function getCameraMode() {
 	return cameraMode;
-}
-
-/**
- * Allows external modules (like interaction) to enable/disable tank controls.
- * @param {boolean} enabled - True to enable tank controls, false otherwise.
- */
-export function setTankControlState(enabled) {
-	if (tankControl.enabled !== enabled) {
-		tankControl.enabled = enabled;
-		console.log("Tank control state set to:", enabled);
-		// Optionally force camera mode on change
-		// cameraMode = enabled ? 'third' : 'first';
-		// if (enabled && controls.isLocked) controls.unlock();
-		// if (!enabled && !controls.isLocked) controls.lock();
-		// Reset FOV?
-		targetFov = 70;
-	}
-}
-
-/**
- * Gets the current tank control state.
- * @returns {boolean}
- */
-export function getTankControlState() {
-	return tankControl.enabled;
 }
 
 /**
@@ -643,7 +609,6 @@ function _onKeyDown(event) {
 			}
 			console.log("Walk mode (CapsLock):", isWalking);
 			break;
-		// Tank control toggle removed - should be handled by interaction logic (e.g., 'E' near tank)
 	}
 	// event.preventDefault(); // Prevent default browser actions for handled keys if needed
 }

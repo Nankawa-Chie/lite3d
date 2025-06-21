@@ -205,9 +205,6 @@ Planets.randomizePlanetPositions(planetBounds.xzMin, planetBounds.xzMax, planetB
 ]);
 
 // --- Load Models ---
-Models.loadTankModel(gltfLoader, scene, (tankObject) => {
-	console.log("Tank model reference available:", tankObject);
-});
 Models.loadMitaRoomModel(gltfLoader, scene);
 Models.loadBathroomModel(gltfLoader, scene, world);
 Models.loadUniformModel(gltfLoader, scene);

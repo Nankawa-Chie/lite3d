@@ -254,14 +254,11 @@ function _loop(currentTime) {
 		const speed = controlsUpdater.getCurrentSpeed();
 		const isSprinting = controlsUpdater.getSprintingState ? controlsUpdater.getSprintingState() : false;
 
-		// Only move if not controlling tank
-		if (!controlsUpdater.getTankControlState()) {
-			characterUpdater.moveCharacter(keys, activeBody, camera, speed, deltaTime, isSprinting); // 使用 activeBody
+		characterUpdater.moveCharacter(keys, activeBody, camera, speed, deltaTime, isSprinting); // 使用 activeBody
 
-			// 处理跳跃输入
-			if (keys["Space"] && isGrounded) { // 使用 isGrounded 状态
-				characterUpdater.characterJump(activeBody, 6); // 使用 activeBody
-			}
+		// 处理跳跃输入
+		if (keys["Space"] && isGrounded) { // 使用 isGrounded 状态
+			characterUpdater.characterJump(activeBody, 6); // 使用 activeBody
 		}
 	}
 

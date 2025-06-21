@@ -6,7 +6,6 @@ import * as CANNON from "cannon-es";
 // --- Module State ---
 // Store references to loaded models if they need to be accessed later
 const loadedModels = {
-	tank: null,
 	bathroom: null,
 	uniform: null,
 	milk: null, // <--- 添加 milk 模型引用
@@ -89,45 +88,6 @@ function _addBathroomPhysics(world, scene, modelScene) {
 }
 
 // --- Exported Loading Functions ---
-
-/**
- * Loads the Tiger Tank model.
- * @param {GLTFLoader} loader - The GLTFLoader instance.
- * @param {THREE.Scene} scene - The main Three.js scene.
- * @param {function(object):void} [onLoadCallback] - Optional callback function when loading completes, receives the tank object.
- */
-export function loadTankModel(loader, scene, onLoadCallback) {
-	loader.load(
-		"models/tiger2_1k.glb",
-		(gltf) => {
-			const tank = gltf.scene;
-			tank.position.set(-12, 0, 28);
-			tank.scale.set(2.5, 2.5, 2.5);
-			scene.add(tank);
-			loadedModels.tank = tank; // Store reference
-			console.log("Tank model loaded.");
-
-			// Enable shadows for the tank model
-			tank.traverse((child) => {
-				if (child.isMesh) {
-					child.castShadow = true;
-					child.receiveShadow = true;
-				}
-			});
-
-			// Optional: Add physics for the tank if needed (e.g., a simple Box shape)
-
-			if (onLoadCallback) {
-				onLoadCallback(tank);
-			}
-		},
-		undefined, // onProgress callback (optional)
-		(error) => {
-			console.error("Error loading tank model:", error);
-		}
-	);
-}
-
 /**
  * 加载 Mita房间 模型。
  * @param {GLTFLoader} loader - GLTFLoader 实例。
@@ -396,12 +356,10 @@ export function loadGardenModel(loader, scene, onLoadCallback, options = {}) {
 	);
 }
 
-
-
 /**
  * Returns references to the loaded models.
  * Note: Models might be null if called before loading is complete.
- * @returns {object} Object containing references: { tank, bathroom, uniform, milk, milkAnimated, mita, garden } // 更新了注释
+ * @returns {object} Object containing references: { bathroom, uniform, milk, milkAnimated, mita, garden } // 更新了注释
  */
 export function getLoadedModels() {
 	return loadedModels;
