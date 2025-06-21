@@ -3662,13 +3662,14 @@ body a {
 }
 
 /* ---------------------------------------------------------------------------------------------------------------APPs */
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .EasyChess {
+/* 定义基础选择器，便于阅读 */
+/* BASE = .iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen */
+
+/* 1. 主应用容器通用样式 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen :is(.EasyChess, .音乐, .黑白棋, .扫雷, .videoApp, .Open-LLM-VTuber) {
 	background-color: #e0c78e;
 	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
+	inset: 0;
 	margin: auto;
 	padding-top: 25px;
 	width: 100%;
@@ -3678,7 +3679,8 @@ body a {
 	animation: fadeIn 1s;
 }
 
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .EasyChess .topBar {
+/* 2. 顶部栏通用样式 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen :is(.EasyChess, .音乐, .黑白棋, .扫雷, .videoApp, .Open-LLM-VTuber) .topBar {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -3689,194 +3691,25 @@ body a {
 	border-bottom: 1px solid #ddd;
 }
 
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .EasyChess.hidden {
+/* 3. 主应用容器隐藏时的通用动画 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen :is(.EasyChess, .音乐, .黑白棋, .扫雷, .videoApp, .Open-LLM-VTuber).hidden {
 	animation: shrink 1s;
 	animation-fill-mode: forwards;
 }
 
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .EasyChess .topBar .backButton {
+/* 4. 返回按钮通用样式 */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen :is(.EasyChess, .音乐, .黑白棋, .扫雷, .videoApp, .Open-LLM-VTuber) .topBar .backButton {
 	cursor: pointer;
 	color: #007aff;
 }
 
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .EasyChess .EasyChessFrame {
-	width: 100%;
-	height: calc(100% - 36px);
-	border: none;
-}
-/*------------------------------------------------------------------------------------------------音乐 */
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .音乐 {
-	background-color: #e0c78e;
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	margin: auto;
-	padding-top: 25px;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	box-sizing: border-box;
-	animation: fadeIn 1s;
-}
-
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .音乐 .topBar {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 10px;
-	height: 36px;
-	font-size: 16px;
-	background-color: #f7f7f7;
-	border-bottom: 1px solid #ddd;
-}
-
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .音乐.hidden {
-	animation: shrink 1s;
-	animation-fill-mode: forwards;
-}
-
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .音乐 .topBar .backButton {
-	cursor: pointer;
-	color: #007aff;
-}
-
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .音乐 .音乐Frame {
-	width: 100%;
-	height: calc(100% - 36px);
-	border: none;
-}
-/*------------------------------------------------------------------------------------------------黑白棋 */
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .黑白棋 {
-	background-color: #e0c78e;
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	margin: auto;
-	padding-top: 25px;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	box-sizing: border-box;
-	animation: fadeIn 1s;
-}
-
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .黑白棋 .topBar {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 10px;
-	height: 36px;
-	font-size: 16px;
-	background-color: #f7f7f7;
-	border-bottom: 1px solid #ddd;
-}
-
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .黑白棋.hidden {
-	animation: shrink 1s;
-	animation-fill-mode: forwards;
-}
-
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .黑白棋 .topBar .backButton {
-	cursor: pointer;
-	color: #007aff;
-}
-
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .黑白棋 .黑白棋Frame {
-	width: 100%;
-	height: calc(100% - 36px);
-	border: none;
-}
-/*------------------------------------------------------------------------------------------------扫雷 */
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .扫雷 {
-	background-color: #e0c78e;
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	margin: auto;
-	padding-top: 25px;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	box-sizing: border-box;
-	animation: fadeIn 1s;
-}
-
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .扫雷 .topBar {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 10px;
-	height: 36px;
-	font-size: 16px;
-	background-color: #f7f7f7;
-	border-bottom: 1px solid #ddd;
-}
-
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .扫雷.hidden {
-	animation: shrink 1s;
-	animation-fill-mode: forwards;
-}
-
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .扫雷 .topBar .backButton {
-	cursor: pointer;
-	color: #007aff;
-}
-
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .扫雷 .扫雷Frame {
-	width: 100%;
-	height: calc(100% - 36px);
-	border: none;
-}
-
-/*------------------------------------------------------------------------------------------------视频 */
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .videoApp {
-	background-color: #e0c78e;
-	position: absolute;
-	top: 0;
-	left: 0;
-	bottom: 0;
-	right: 0;
-	margin: auto;
-	padding-top: 25px;
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-	box-sizing: border-box;
-	animation: fadeIn 1s;
-}
-
-/* 视频App顶部栏样式 */
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .videoApp .topBar {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 10px;
-	height: 36px;
-	font-size: 16px;
-	background-color: #f7f7f7;
-	border-bottom: 1px solid #ddd;
-}
-
-/* 当.videoApp被隐藏时 */
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .videoApp.hidden {
-	animation: shrink 1s;
-	animation-fill-mode: forwards;
-}
-
-/* 视频App返回按钮样式 */
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .videoApp .topBar .backButton {
-	cursor: pointer;
-	color: #007aff;
-}
-
-/* 视频App的iframe样式 */
-.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .videoApp .videoFrame {
+/* 5. Iframe/内容区域通用样式 - 这部分因为 frame 类名不同，:is() 帮助有限，仍需单独列出或采用属性选择器等更高级技巧（如果适用） */
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .EasyChess .EasyChessFrame,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .音乐 .音乐Frame,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .黑白棋 .黑白棋Frame,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .扫雷 .扫雷Frame,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .videoApp .videoFrame,
+.iphone模拟 .container .iphone .bordeColor .黑色边框 .mainScreen .Open-LLM-VTuber .Open-LLM-VTuberFrame {
 	width: 100%;
 	height: calc(100% - 36px);
 	border: none;

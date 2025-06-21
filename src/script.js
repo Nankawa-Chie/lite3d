@@ -25,7 +25,6 @@ import * as MiniMap from "./modules/minimap.js";
 import * as Debug from "./modules/debug.js";
 import * as Animate from "./modules/animate.js";
 import * as Skybox from "./modules/skybox.js";
-import * as RoomModule from "./modules/RoomModule.js"; // Import RoomModule
 
 // --- DOM Elements ---
 const loadingScreen = document.getElementById("loading-screen");
@@ -171,7 +170,6 @@ const roomTextsSet2 = {
 	back: "IT'S BEEN A WHILE\nSINCE YOU FELT RIGHT",
 	right: "", // Or keep "HOME"
 };
-let mainRoomModuleInstance; // Variable to hold the room module instance
 
 // --- Create Scene Objects ---
 const houseGroup = House.createHouse(scene, world, textureLoader); // House loads own textures
@@ -199,20 +197,6 @@ const soccerFieldData = SoccerField.createSoccerField(scene, world);
 const planetObjects = Planets.createAllPlanets(scene, world);
 Galaxy.generateGalaxy(scene);
 
-// --- Create the Room using the Module ---
-mainRoomModuleInstance = new RoomModule.RoomModule(
-	scene,
-	roomWidth,
-	roomHeight,
-	roomDepth,
-	roomTextsSet1,
-	roomTextsSet2
-);
-const mainRoom = mainRoomModuleInstance.createRoom();
-mainRoom.position.x = -25; // Set the position as requested
-scene.add(mainRoom);
-console.log("Created and added the new room at x = -25 using RoomModule.");
-
 // --- Position Planets ---
 const planetBounds = { xzMin: -150, xzMax: 150, yMin: 10, yMax: 80 };
 Planets.randomizePlanetPositions(planetBounds.xzMin, planetBounds.xzMax, planetBounds.yMin, planetBounds.yMax, [
@@ -232,8 +216,6 @@ Models.loadGardenModel(gltfLoader, scene, {
 	scale: new THREE.Vector3(1.5, 1.5, 1.5),
 	addPhysics: true,
 });
-// Models.loadMilkModel(gltfLoader,scene); // 注释掉或移除旧的静态模型加载（如果不再需要）
-Models.loadMilkStaticModel(gltfLoader, scene); // 使用重命名后的函数加载静态模型（如果仍需要）
 
 // --- 修改：加载带动画的模型并创建物理体 ---
 Models.loadMilkAnimatedModel(
@@ -417,7 +399,6 @@ const animationRefs = {
 	minimapUpdater: MiniMap,
 	planetsUpdater: Planets,
 	skyboxUpdater: Skybox,
-	roomModuleUpdater: mainRoomModuleInstance, // Add the room module instance
 };
 // --- 结束修改 ---
 

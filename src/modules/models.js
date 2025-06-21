@@ -270,59 +270,6 @@ export function loadUniformModel(loader, scene) {
  * @param {function(object):void} [onLoadCallback] - Optional callback function when loading completes, receives the milk object.
  * @param {object} [options] - Optional settings { position: THREE.Vector3, scale: THREE.Vector3, rotation: THREE.Euler }.
  */
-// --- 修改 loadMilkModel 函数名以区分 ---
-/**
- * Loads the static Milk character model (without animation handling).
- * @param {GLTFLoader} loader - The GLTFLoader instance.
- * @param {THREE.Scene} scene - The main Three.js scene.
- * @param {function(object):void} [onLoadCallback] - Optional callback function when loading completes, receives the milk object.
- * @param {object} [options] - Optional settings { position: THREE.Vector3, scale: THREE.Vector3, rotation: THREE.Euler }.
- */
-export function loadMilkStaticModel(loader, scene, onLoadCallback, options = {}) { // <--- 重命名函数
-	const {
-		position = new THREE.Vector3(0, 0, 0),
-		scale = new THREE.Vector3(0.03, 0.03, 0.03),
-		rotation = new THREE.Euler(0, 0, 0),
-	} = options;
-
-	loader.load(
-		"models/Milk.glb", // 确认这是静态模型的路径
-		(gltf) => {
-			const milk = gltf.scene;
-			milk.position.copy(position);
-			milk.scale.copy(scale);
-			milk.rotation.copy(rotation);
-
-			milk.traverse((child) => {
-				if (child.isMesh) {
-					child.castShadow = true;
-					child.receiveShadow = true;
-				}
-			});
-
-			scene.add(milk);
-			loadedModels.milk = milk; // 存储静态模型引用
-			console.log("Static Milk model loaded at:", position);
-
-			// Enable shadows for the static milk model
-			milk.traverse((child) => {
-				if (child.isMesh) {
-					child.castShadow = true;
-					child.receiveShadow = true;
-				}
-			});
-
-			if (onLoadCallback) {
-				onLoadCallback(milk);
-			}
-		},
-		undefined,
-		(error) => {
-			console.error("Error loading static milk model:", error);
-		}
-	);
-}
-
 
 // --- 新增：加载带动画的 Milk 模型 ---
 /**

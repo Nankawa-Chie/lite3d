@@ -218,6 +218,12 @@ $(function () {
 				type: "app",
 				动态: false,
 			},
+			{
+				应用名: "Open-LLM-VTuber",
+				应用图标: "./apps/Open-LLM-VTuber/Open-LLM-VTuber.png",
+				type: "app",
+				动态: false,
+			}
 		],
 		wrapperApps: {
 			appsGrupo: 24,
@@ -231,6 +237,7 @@ $(function () {
 		},
 		电量低: false,
 		draggScreen: false,
+		statusBarHeight: 25, // 定义状态栏高度变量
 	};
 	//--------------------------------------------------------------------------------------扩展功能
 	$.fn.extend({
@@ -327,11 +334,6 @@ $(function () {
 			let dia = globalState.dateTime.dias[config.日期.getDay()];
 			let diaReversed = (config.diaCompleto ? dia : dia.substring(0, 3)).split("").reverse().join("");
 			this.append(`<div class="日期Wrapper"><p class="diaNom">${diaReversed}</p><p class="diaNum">${hoy}</p></div>`);
-			/*this.append(
-				`<div class="日期Wrapper"><p class="diaNom">${
-					config.diaCompleto ? dia : dia.substring(0, 3)
-				}</p><p class="diaNum">${hoy}</p></div>`
-			);*/
 			return this;
 		},
 		时钟: function () {
@@ -396,17 +398,26 @@ $(function () {
 			let mes = globalState.dateTime.meses[config.日期.getMonth()];
 			let diaReversed = (config.diaCompleto ? dia : dia.substring(0, 3)).split("").reverse().join("");
 			this.text(`${mes}${hoy}号 ，${diaReversed}`);
-			/* this.text(
-				`${mes}${hoy}号 ，${config.diaCompleto ? dia : dia.substring(0, 3)}`
-			); */
 			return this;
 		},
 	});
 
 	//---------------------------------------------------------------------------------------------- 功能
+	/**
+	 * 规范化字符串，移除音标符号。
+	 * @param {string} string - 需要处理的原始字符串。
+	 * @returns {string} - 处理后的字符串。
+	 */
 	function sanearString(string) {
 		return string.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 	}
+
+	/**
+	 * 在指定的容器中渲染应用程序图标和分页点。
+	 * @param {Array<Object>} apps - 应用程序对象数组。
+	 * @param {jQuery} container - 渲染应用程序图标的jQuery容器对象。
+	 * @param {jQuery} containerDots - 渲染分页点的jQuery容器对象。
+	 */
 	function pintarApps(apps, container, containerDots) {
 		container.empty();
 		containerDots.empty();
@@ -437,23 +448,17 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
 		}
 		container.append(html);
 	}
+
+	/**
+	 * 显示一个iOS风格的警告框。
+	 * @param {Object} config - 配置对象。
+	 */
 	function alertaiOS(config) {
-		if ($("#iOSAlert").length || $(".mainScreen").hasClass("锁屏")) return false;
+		if ($("#iOSAlert").length && !config.ocultar) return false;
 		config = jQuery.extend(
 			{
 				wrapper: $(".iphone .黑色边框"),
-				actions: [
-					{
-						texto: "Aceptar",
-						warning: true,
-						// callback: function(){console.log('callback aceptar')}
-					},
-					{
-						texto: "取消",
-						warning: false,
-						// callback: function () { console.log('callback 取消') }
-					},
-				],
+				actions: [ { texto: "Aceptar", warning: true,}, { texto: "取消", warning: false,}, ],
 				closable: false,
 				closeOnActions: true,
 				encabezado: "Encabezado de la modal",
@@ -470,9 +475,7 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
 		}
 		if (config.ocultar) {
 			$(document).off("click", "#iOSAlert .action");
-			$("#iOSAlert").fadeOut(function () {
-				$(this).remove();
-			});
+			$("#iOSAlert").fadeOut(function () { $(this).remove(); });
 			return false;
 		}
 		config.wrapper.append(`
@@ -486,62 +489,51 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
 `);
 		if (config.closable) $("#iOSAlert").prepend('<div class="closable"></div>');
 		$("#iOSAlert")
-			.fadeIn("fast", function () {
-				$(this).children(".容器").removeClass("hidAnim");
-			})
+			.fadeIn("fast", function () { $(this).children(".容器").removeClass("hidAnim"); })
 			.css("display", "flex");
 		$(document).on("click", "#iOSAlert .action", function (e) {
 			let action = config.actions[$(e.currentTarget).index()];
-			if (action.callback && typeof action.callback == "function") {
-				action.callback(e);
-			}
+			if (action.callback && typeof action.callback == "function") { action.callback(e); }
 			if (config.closeOnActions) {
 				$(document).off("click", "#iOSAlert .action");
-				$("#iOSAlert").fadeOut("fast", function () {
-					$(this).remove();
-				});
+				$("#iOSAlert").fadeOut("fast", function () { $(this).remove(); });
 			}
 		});
 		if (config.hasOwnProperty("autoclose")) {
 			setTimeout(function () {
 				$(document).off("click", "#iOSAlert .action");
-				$("#iOSAlert").fadeOut("fast", function () {
-					$(this).remove();
-				});
+				$("#iOSAlert").fadeOut("fast", function () { $(this).remove(); });
 			}, config.autoclose);
 		}
 		$(document).on("click", "#iOSAlert .closable", function () {
 			$(document).off("click", "#iOSAlert .action");
-			$("#iOSAlert").fadeOut("fast", function () {
-				$(this).remove();
-			});
+			$("#iOSAlert").fadeOut("fast", function () { $(this).remove(); });
 		});
 	}
 
+	/**
+	 * 渲染用户界面，包括应用程序图标和小部件。
+	 */
 	function renderizarUI() {
-		//将所有应用程序渲染在主容器中
 		pintarApps(globalState.apps, $(".wrapperApps"), $(".wrapperDots"));
-		//如果日历小部件存在
 		if ($('.wrapperApps .app[data-app="widgetFull日历"]').length) {
-			//准备日历小部件
 			$('.wrapperApps .app[data-app="widgetFull日历"] .应用图标').append(
 				'<div class="eventos"><p>' + getToday() + '</p></div><div class="日历Wrapper"></div>'
 			);
-			//创建日历小部件
 			$('.wrapperApps .app[data-app="widgetFull日历"] .应用图标 .日历Wrapper').日历();
 		}
-		//如果日历动态应用图标存在
 		if ($(".wrapperApps .app.日历动态").length) {
-			//日历动态应用图标
 			$(".wrapperApps .app.日历动态 .应用图标").日期应用图标();
 		}
-		//如果动态模拟时钟存在
 		if ($(".wrapperApps .app.时钟动态").length) {
-			//动态模拟时钟
 			$(".wrapperApps .app.时钟动态 .应用图标").时钟();
 		}
 	}
 
+	/**
+	 * 获取今天的日期和星期。
+	 * @returns {string} - 格式化的日期字符串，例如："今天是2023.10.26，星期四"。
+	 */
 	function getToday() {
 		var date = new Date();
 		var year = date.getFullYear();
@@ -551,6 +543,9 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
 		return "今天是" + year + "." + month + "." + day + "，星期" + week;
 	}
 	//----------------------------------------------------------------------------------------- 原始动画
+	/**
+	 * 执行iPhone开机动画和初始化UI渲染。
+	 */
 	function encendido() {
 		renderizarUI();
 		setTimeout(() => {
@@ -567,7 +562,7 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
 	$("#touchID").on("click", function () {
 		if (!$(this).hasClass("active")) {
 			let sonido = new Audio("./iphoneLockScreen.mp3");
-			sonido.play();
+			sonido.play().catch(e => console.log("锁屏音效播放失败:", e));
 		}
 		$("#iOSAlert").remove();
 		$(this).toggleClass("active");
@@ -577,24 +572,15 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
 		$(this).toggleClass("active");
 		$(".iphone").toggleClass("showBackSide");
 	});
-	$("#voiceup").on("click", function () {
-		$;
-	});
-	$("#voicedown").on("click", function () {
-		$;
-	});
+	$("#voiceup").on("click", function () { /* 音量增加逻辑 (暂未实现) */ });
+	$("#voicedown").on("click", function () { /* 音量减少逻辑 (暂未实现) */ });
 
 	encendido();
-	//在状态栏中显示时间
 	$(".statusBar .时间").时间();
-	//在锁屏界面中显示时间
 	$(".lockScreen .时间").时间();
-	//在锁屏界面中显示日期
 	$(".lockScreen .日期").日期();
-	//在Widget中心屏幕的事件块中显示当天的事件
 	$(".widgetCenter .block.eventos").日期应用图标({ diaCompleto: true });
 
-	//锁屏界面的触摸动作
 	$(".lockScreen").touchMov({
 		mov: "y",
 		movUp: function (e) {
@@ -606,17 +592,12 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
 				$(e.currentTarget).siblings(".statusBar").find(".operador").addClass("hidden");
 				$(e.currentTarget).siblings(".statusBar").find(".时间").removeClass("hidden");
 			}, 300);
-			//Timeout 模拟电池耗尽
 			if (!globalState.电量低) {
 				setTimeout(() => {
 					alertaiOS({
 						encabezado: "电池电量低。",
 						mensaje: "剩余 20% 备用核能电源",
-						actions: [
-							{
-								texto: "Ok",
-							},
-						],
+						actions: [ { texto: "Ok", }, ],
 					});
 					$(".mainScreen .statusBar .电量").removeClass("mid").addClass("low");
 					globalState.电量低 = true;
@@ -666,7 +647,7 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
 				.addClass("active");
 		},
 		finishMov: function (e) {
-			transform = e.currentTarget.style.transform;
+			let transform = e.currentTarget.style.transform;
 			if (transform.length) {
 				transform = transform.split("(");
 				transform = transform[1].split("px");
@@ -737,14 +718,11 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
 		},
 	});
 
-	//------------------------------------------------------------------------长按应用程序1秒后显示浮动菜单
 	$(".mainScreen .appScreen").mousedown(function (e) {
 		if ($(this).parent().hasClass("shakingApps")) return false;
 		let timeout = setTimeout(() => {
-			console.log("a");
 			if (!globalState.draggScreen) {
 				if ($(e.target).hasClass("app") || $(e.target).parents(".app").length) {
-					//Dio click en una app. Ok, le mostraremos el menu flotante
 					$(this).parent().addClass("filterBlur");
 					let app;
 					if ($(e.target).hasClass("app")) {
@@ -791,43 +769,32 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
 </div>
 `);
 				} else {
-					//---------------------------------------------------------------------现在是抖动应用程序的时间了
 					$(this).parent().addClass("shakingApps");
 					$(".appScreen .app").append('<div class="removeApp"></div>');
 				}
 			}
 		}, 1000);
-		$(this).mouseup(function () {
-			clearTimeout(timeout);
-		});
-		$(this).mouseleave(function () {
-			clearTimeout(timeout);
-		});
+		$(this).mouseup(function () { clearTimeout(timeout); });
+		$(this).mouseleave(function () { clearTimeout(timeout); });
 	});
-	//从应用程序浮动菜单启动抖动应用程序
 	$("body").on("click", ".fixedMenuFixedApp .菜单选项.shaking", function () {
 		$(this).parent().remove();
 		$("#fixedApp").remove();
 		$(".mainScreen").removeClass("filterBlur").addClass("shakingApps");
 		$(".appScreen .app").append('<div class="removeApp"></div>');
 	});
-	//退出应用程序删除模式（抖动应用程序）
 	$(".exitShake").click(function () {
 		$(".mainScreen").removeClass("shakingApps");
 		$(".appScreen .app .removeApp").remove();
 	});
-	//显示Widget屏幕
 	$(".widgetPlus").click(function () {
 		$(".widgetScreen").removeClass("hidden");
 		$(".appScreen .app .removeApp").remove();
 		$(".mainScreen").removeClass("shakingApps").addClass("widgetScreenOpen");
 	});
-	//卸载应用
 	$("body").on("click", ".fixedMenuFixedApp .菜单选项.卸载", function () {
 		let idApp = $("#fixedApp").data("id");
-		if (idApp == undefined) {
-			var idDeck = $("#fixedApp").data("indeck");
-		}
+		if (idApp == undefined) { var idDeck = $("#fixedApp").data("indeck"); }
 		$(this).parent().remove();
 		$("#fixedApp").remove();
 		$(".mainScreen").removeClass("filterBlur");
@@ -835,66 +802,41 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
 			encabezado: `你想将 ${idApp !== undefined ? globalState.apps[idApp].应用名 : "app"} 转移到应用库还是删除该应用？`,
 			mensaje: "转移该应用将从您的主屏幕上删除它，但保留所有数据。",
 			actions: [
-				{
-					texto: "卸载应用",
-					warning: true,
-					callback: function () {
+				{ texto: "卸载应用", warning: true, callback: function () {
 						if (idApp !== undefined) {
 							globalState.apps.splice(idApp, 1);
 							renderizarUI();
 						} else if (idDeck) {
 							$('.deckApps .app[data-indeck="' + idDeck + '"]').remove();
 						}
-					},
-				},
-				{
-					texto: "转移到应用库",
-					callback: function () {
-						console.log("Biblioteca de apps pendiente");
-					},
-				},
-				{
-					texto: "取消",
-				},
+					}, },
+				{ texto: "转移到应用库", callback: function () { console.log("应用库功能待实现"); }, },
+				{ texto: "取消", },
 			],
 		});
 	});
 	$(".appScreen").on("click", ".app .removeApp", function () {
 		let idApp = $(this).parent(".app").data("id");
-		if (idApp == "undefined") {
-			var idDeck = $(this).parent(".app").data("indeck");
-		}
+		if (idApp == "undefined") { var idDeck = $(this).parent(".app").data("indeck");}
 		$(".appScreen .app .removeApp").remove();
 		$(".mainScreen").removeClass("shakingApps");
 		alertaiOS({
-			encabezado: `你想将 ${idApp !== undefined ? globalState.apps[idApp].应用名 : "app"} 转移到应用库还是删除该应用？`,
+			encabezado: `你想将 ${idApp !== undefined && idApp !== "undefined" ? globalState.apps[idApp].应用名 : "app"} 转移到应用库还是删除该应用？`,
 			mensaje: "转移该应用将从您的主屏幕上删除它，但保留所有数据。",
 			actions: [
-				{
-					texto: "卸载应用",
-					warning: true,
-					callback: function () {
-						if (idApp !== undefined) {
+				{ texto: "卸载应用", warning: true, callback: function () {
+						if (idApp !== undefined && idApp !== "undefined") {
 							globalState.apps.splice(idApp, 1);
 							renderizarUI();
 						} else if (idDeck) {
 							$('.deckApps .app[data-indeck="' + idDeck + '"]').remove();
 						}
-					},
-				},
-				{
-					texto: "转移到应用库",
-					callback: function () {
-						console.log("Biblioteca de apps pendiente");
-					},
-				},
-				{
-					texto: "取消",
-				},
+					}, },
+				{ texto: "转移到应用库", callback: function () { console.log("应用库功能待实现"); }, },
+				{ texto: "取消", },
 			],
 		});
 	});
-	//--------------------------------------------------------------------------控制中心应用程序图标的切换开关
 	$(".controlCenter .actionIcon").click(function () {
 		$(this).toggleClass("active");
 		if ($(this).hasClass("modoVuelo")) {
@@ -907,12 +849,20 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
 	//-------------------------------------------------------------------------------------一些应用程序的用户界面----------------------//
 
 	//-------------------------------------------------------------------------------------------------相机
+	/**
+	 * 启动相机应用程序。
+	 */
 	function 相机() {
-		if (!$(".相机App").length) {
-			$(".mainScreen").append(`
-      <div class="相机App hidden">
+		const appContainerClass = "相机App";
+		let $appContainer = $(`.${appContainerClass}`);
+
+		if (!$appContainer.length) {
+			$appContainer = $(`
+      <div class="${appContainerClass} genericAppContainer hidden">
         <div class="topBar">
-          <div class="camIco flash">
+          <div class="backButton">返回</div>
+          <h3 class="title">相机</h3>
+           <div class="camIco flash">
             <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
               <path d="M41 6L13 34h14.187L23 58l27.998-29.999H37L41 6z"></path>
             </svg>
@@ -931,7 +881,7 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
           </div>
         </div>
         <div class="相机Area">
-          <video id="camera_feed" autoplay></video>
+          <video id="camera_feed" autoplay playsinline></video>
         </div>
         <div class="modos相机">
           <div class="modo">慢动作</div>
@@ -942,8 +892,8 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
         </div>
         <div class="obturadorArea">
           <div class="imgPreview" style="background-image: url(./src/黑客主角.png);"></div>
-          <div class="obturador" onclick="takePicture()"></div>
-          <div class="toggleCam" onclick="toggleCamera()">
+          <div class="obturador"></div>
+          <div class="toggleCam">
             <div class="camIco">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
                 <path d="M54.741 28.14a23.002 23.002 0 0 1-39.088 19.124"></path>
@@ -956,43 +906,81 @@ ${app.通知es ? `<div class="通知">${app.通知es}</div>` : ""}
         </div>
       </div>
     `);
-			$(".相机App").touchMov({
-				mov: "y",
-				movUp: function (e) {
-					$(e.currentTarget).addClass("hidden");
-					$(".statusBar").removeClass("onlyLed camActiv");
-				},
+			$appContainer.css({
+				'position': 'absolute', 'top': globalState.statusBarHeight + 'px', 'left': '0', 'width': '100%',
+				'height': `calc(100% - ${globalState.statusBarHeight}px)`, 'background-color': '#000000',
+				'overflow': 'hidden', 'box-sizing': 'border-box', 'z-index': '500',
+				'display': 'flex', 'flex-direction': 'column',
+				'transition': 'opacity 0.3s ease-out, transform 0.3s ease-out',
+			});
+			// Specific styles for camera app's topBar and content area
+			$appContainer.find(".topBar").css({'color': '#fff', 'background-color': 'rgba(0,0,0,0.5)', 'height': '50px', 'flex-shrink': '0' });
+            $appContainer.find(".topBar .title").css({'color':'#fff'});
+			$appContainer.find(".相机Area").css({'flex-grow': '1', 'background-color': '#000', 'display':'flex', 'align-items':'center', 'justify-content':'center'});
+            $appContainer.find(".modos相机").css({'height': '60px', 'background-color':'rgba(0,0,0,0.8)', 'color':'#fff', 'display':'flex', 'align-items':'center', 'justify-content':'space-around', 'flex-shrink':'0'});
+            $appContainer.find(".obturadorArea").css({'height': '100px', 'background-color':'#000', 'color':'#fff', 'display':'flex', 'align-items':'center', 'justify-content':'space-around', 'flex-shrink':'0'});
+
+
+			$(".mainScreen").append($appContainer);
+
+			const backButtonSelector = `.${appContainerClass} .topBar .backButton`;
+			$("body").off("click", backButtonSelector).on("click", backButtonSelector, function () {
+				const $appToClose = $(this).closest(`.${appContainerClass}`);
+				$appToClose.addClass("hidden");
+				const video = document.getElementById("camera_feed");
+				if (video && video.srcObject) {
+					video.srcObject.getTracks().forEach(track => track.stop());
+					video.srcObject = null;
+				}
+				$(".statusBar").removeClass("onlyLed camActiv");
+				setTimeout(() => { $appToClose.hide(); }, 300);
 			});
 		}
+
 		setTimeout(function () {
-			// 捕获摄像头
 			const video = document.getElementById("camera_feed");
-			navigator.mediaDevices
-				.getUserMedia({ video: true, audio: false })
-				.then((stream) => {
-					video.srcObject = stream;
-					video.play();
-				})
-				.catch((error) => {
-					console.error("Could not access camera", error);
+			if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+				navigator.mediaDevices
+					.getUserMedia({ video: true, audio: false })
+					.then((stream) => {
+						video.srcObject = stream;
+						video.play().catch(e => console.error("Video play error:", e));
+						$(".statusBar").addClass("onlyLed camActiv");
+						$appContainer.show().removeClass("hidden");
+					})
+					.catch((error) => {
+						console.error("无法访问摄像头:", error);
+						alertaiOS({
+							encabezado: "摄像头错误",
+							mensaje: "无法访问您的摄像头。请检查权限或确保没有其他应用正在使用它。",
+							actions: [{ texto: "好的" }]
+						});
+					});
+			} else {
+				alertaiOS({
+					encabezado: "功能不支持",
+					mensaje: "您的浏览器不支持访问摄像头。",
+					actions: [{ texto: "好的" }]
 				});
-			$(".statusBar").addClass("onlyLed camActiv");
-			$(".相机App").removeClass("hidden");
-		}, 100);
+			}
+		}, 10); // Reduced delay for quicker UI update
 	}
 
 	$("body").on("click", '.app[data-app="app相机"]', function () {
 		相机();
 	});
-});
 
-//-------------------------------------------------------------------------------------------------照片
-let importedImages = [];
-
-function 照片app() {
-	if (!$(".照片app").length) {
-		$(".mainScreen").append(`
-      <div class="照片app">
+	//-------------------------------------------------------------------------------------------------照片
+	let importedImages = [];
+	/**
+	 * 启动照片应用程序。
+	 */
+	function 照片app() {
+		const appContainerClass = "照片app";
+		let $appContainer = $(`.${appContainerClass}`);
+		if (!$appContainer.length) {
+			$appContainer = $(`
+      <div class="${appContainerClass} genericAppContainer hidden">
         <div class="topBar">
           <div class="backButton">返回</div>
           <h3 class="title">照片</h3>
@@ -1000,189 +988,194 @@ function 照片app() {
         </div>
         <input type="file" class="importInput" accept="image/*" style="display: none;">
         <div class="照片Area">
-          <img src="./src/4.png" width="80px" height="120px">
-          ${importedImages.map((url) => `<img src="${url}" width="80px" height="120px">`).join("")}
+          <img src="./src/4.png" width="80px" height="120px" alt="预设图片">
+          ${importedImages.map((url) => `<img src="${url}" width="80px" height="120px" alt="导入的图片">`).join("")}
         </div>
       </div>
     `);
+			$appContainer.css({
+				'position': 'absolute', 'top': globalState.statusBarHeight + 'px', 'left': '0', 'width': '100%',
+				'height': `calc(100% - ${globalState.statusBarHeight}px)`, 'background-color': '#f0f0f0', // Light gray background
+				'overflow': 'hidden', 'box-sizing': 'border-box', 'z-index': '500',
+				'display': 'flex', 'flex-direction': 'column',
+				'transition': 'opacity 0.3s ease-out, transform 0.3s ease-out',
+			});
+            $appContainer.find(".照片Area").css({'flex-grow':'1', 'overflow-y':'auto', 'padding':'10px'});
+            $appContainer.find(".topBar .importButton").css({'color': '#007aff', 'cursor':'pointer', 'padding':'5px'});
+
+
+			$(".mainScreen").append($appContainer);
+
+			const backButtonSelector = `.${appContainerClass} .topBar .backButton`;
+			$("body").off("click", backButtonSelector).on("click", backButtonSelector, function () {
+				const $appToClose = $(this).closest(`.${appContainerClass}`);
+				$appToClose.addClass("hidden");
+				setTimeout(() => { $appToClose.hide(); }, 300);
+			});
+
+            // Import button specific to Photos app
+            const importButtonSelector = `.${appContainerClass} .topBar .importButton`;
+            $("body").off("click", importButtonSelector).on("click", importButtonSelector, function () {
+                $appContainer.find(".importInput").click();
+            });
+
+            const importInputChangeSelector = `.${appContainerClass} .importInput`;
+            $("body").off("change", importInputChangeSelector).on("change", importInputChangeSelector, function (e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        importedImages.push(e.target.result);
+                        $appContainer.find(".照片Area").append(`<img src="${e.target.result}" width="80px" height="120px" alt="新导入的图片">`);
+                    };
+                    reader.readAsDataURL(file);
+                    $(this).val('');
+                }
+            });
+
+            const imageClickSelector = `.${appContainerClass} .照片Area img`;
+            $("body").off("click", imageClickSelector).on("click", imageClickSelector, function () {
+                if ($(".fullscreen-image-mask").length) {
+                    $(".fullscreen-image-mask").remove();
+                    return;
+                }
+                const imgSrc = $(this).attr("src");
+                const mask = $('<div class="fullscreen-image-mask"></div>').css({
+                    position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                    backgroundColor: 'rgba(0,0,0,0.9)', display: 'flex', justifyContent: 'center',
+                    alignItems: 'center', zIndex: 10000, cursor: 'pointer'
+                });
+                const imgElement = $('<img>').attr('src', imgSrc).css({
+                    maxWidth: '95%', maxHeight: '95%', objectFit: 'contain'
+                });
+                mask.append(imgElement);
+                $appContainer.append(mask); // Append to the app container
+                mask.on("click", function() { $(this).remove(); });
+            });
+		}
+		$appContainer.show().removeClass("hidden");
 	}
-}
 
-$("body").on("click", '.app[data-app="app照片"]', function () {
-	照片app();
-});
+	$("body").on("click", '.app[data-app="app照片"]', function () {
+		照片app();
+	});
 
-$("body").on("click", ".照片app .backButton", function () {
-	$(".照片app").addClass("hidden");
-	setTimeout(function () {
-		$(".照片app").remove();
-	}, 1000);
-});
+	//------------------------------------------------------------------------------------------------- 通用App启动器
+	/**
+	 * 通用应用程序启动函数。
+	 * @param {string} appName - 应用程序的名称 (用于CSS类名和data-attribute)。
+	 * @param {string} appTitle - 应用程序在顶部栏显示的标题。
+	 * @param {string} iframeSrc - iframe的源URL。
+	 * @param {boolean} [requiresMicrophone=false] - iframe是否需要麦克风权限。
+	 */
+	function launchApp(appName, appTitle, iframeSrc, requiresMicrophone = false) {
+		const appContainerClass = `${appName}AppContainer`; // e.g., EasyChessAppContainer
+		let $appContainer = $(`.${appContainerClass}`);
 
-$("body").on("click", ".照片app .照片Area img", function () {
-	if ($(this).hasClass("fullScreen")) {
-		$(this).removeClass("fullScreen");
-	} else {
-		$(this).addClass("fullScreen");
+		if (!$appContainer.length) {
+			let iframeAttrs = `src="${iframeSrc}" class="${appName}Frame" frameborder="0" style="flex-grow: 1; width: 100%; height: 100%; border: none;"`;
+			if (requiresMicrophone) {
+				iframeAttrs += ` allow="microphone"`;
+			}
+
+			// Create the app container HTML structure
+			$appContainer = $(`
+                <div class="${appContainerClass} genericAppContainer hidden">
+                    <div class="topBar">
+                        <div class="backButton">返回</div>
+                        <h3 class="title">${appTitle}</h3>
+                    </div>
+                    <iframe ${iframeAttrs}></iframe>
+                </div>
+            `);
+
+			// Apply essential CSS for positioning and layout
+			$appContainer.css({
+				'position': 'absolute',
+				'top': globalState.statusBarHeight + 'px', // Position below the main status bar
+				'left': '0',
+				'width': '100%',
+				'height': `calc(100% - ${globalState.statusBarHeight}px)`, // Full height below status bar
+				'background-color': '#f7f7f7', // A neutral background
+				'overflow': 'hidden',
+				'box-sizing': 'border-box',
+				'z-index': '500', // Above home screen, below system alerts
+				'display': 'flex',
+				'flex-direction': 'column',
+				'opacity': '0', // Start hidden for animation
+				'transform': 'scale(0.95)', // Start scaled down for animation
+				'transition': 'opacity 0.25s ease-out, transform 0.25s ease-out'
+			});
+
+            // Style the topBar within the app
+            $appContainer.find('.topBar').css({
+                'height': '36px',
+                'display': 'flex',
+                'align-items': 'center',
+                'justify-content': 'space-between',
+                'padding': '0 10px',
+                'background-color': '#f7f7f7', // iOS-like top bar
+                'border-bottom': '1px solid #cccccc',
+                'flex-shrink': '0', // Prevent topBar from shrinking
+                'box-sizing': 'border-box'
+            });
+            $appContainer.find('.topBar .backButton').css({
+                'color': '#007aff',
+                'cursor': 'pointer',
+                'padding': '5px 10px'
+            });
+            $appContainer.find('.topBar .title').css({
+                'font-weight': '600',
+                'font-size': '17px',
+                'position': 'absolute', // Center title
+                'left': '50%',
+                'transform': 'translateX(-50%)'
+            });
+
+
+			$(".mainScreen").append($appContainer);
+
+			// Back button event handler (ensure it's bound only once per app type)
+			const backButtonSelector = `.${appContainerClass} .topBar .backButton`;
+			$("body").off("click", backButtonSelector).on("click", backButtonSelector, function () {
+				const $appToClose = $(this).closest(`.${appContainerClass}`);
+				$appToClose.css({'opacity': '0', 'transform': 'scale(0.95)'}); // Trigger exit animation
+				setTimeout(() => {
+					$appToClose.hide();
+				}, 250); // Match animation duration
+			});
+		}
+
+		// Show App: Ensure it's visible and trigger entry animation
+		$appContainer.show();
+        setTimeout(() => { // Timeout to allow CSS to apply for transition
+            $appContainer.css({'opacity': '1', 'transform': 'scale(1)'});
+        }, 10);
 	}
-});
 
-$("body").on("click", ".照片app .importButton", function () {
-	$(".照片app .importInput").click();
-});
+	// 更新应用点击事件以使用launchApp
+	$("body").on("click", '.app[data-app="appEasyChess"]', function () {
+		launchApp("EasyChess", "Easy Chess", "./apps/EasyChess/index.html");
+	});
 
-$("body").on("change", ".照片app .importInput", function (e) {
-	const file = e.target.files[0];
-	if (file) {
-		const reader = new FileReader();
-		reader.onload = function (e) {
-			importedImages.push(e.target.result);
-			$(".照片app .照片Area").append(`<img src="${e.target.result}" width="80px" height="120px">`);
-		};
-		reader.readAsDataURL(file);
-	}
-});
-//-------------------------------------------------------------------------------------------------主部件
-$("body").on("click", ".contenido .应用图标", function () {
-	$(".mainScreen").append(`
+	$("body").on("click", '.app[data-app="app音乐"]', function () {
+		launchApp("音乐", "音乐", "./apps/音乐播放器/index.html");
+	});
 
-  `);
-});
+	$("body").on("click", '.app[data-app="app黑白棋"]', function () {
+		launchApp("黑白棋", "黑白棋", "./apps/黑白棋/index.html");
+	});
 
-$("body").on("click", " .closeButton", function () {
-	$("").remove();
-});
+	$("body").on("click", '.app[data-app="app扫雷"]', function () {
+		launchApp("扫雷", "扫雷", "./apps/扫雷/index.html");
+	});
 
-$("body").on("click", "", function (e) {});
-//-------------------------------------------------------------------------------------------------EasyChess
-function EasyChess() {
-	if (!$(".EasyChess").length) {
-		$(".mainScreen").append(`
-      <div class="EasyChess">
-        <div class="topBar">
-          <div class="backButton">Back</div>
-          <h3 class="title">Easy Chess</h3>
-        </div>
-        <iframe src="./apps/EasyChess/index.html" class="EasyChessFrame"></iframe>
-      </div>
-    `);
-	}
-}
+	$("body").on("click", '.app[data-app="app视频"]', function () {
+		launchApp("视频", "视频", "./apps/video/index.html");
+	});
 
-$("body").on("click", '.app[data-app="appEasyChess"]', function () {
-	EasyChess();
-});
+	$("body").on("click", '.app[data-app="appOpen-LLM-VTuber"]', function () {
+		launchApp("OpenLLMVTuber", "Open-LLM-VTuber", "http://localhost:12393/", true);
+	});
 
-$("body").on("click", ".EasyChess .backButton", function () {
-	$(".EasyChess").addClass("hidden");
-	setTimeout(function () {
-		$(".EasyChess").remove();
-	}, 1000);
-});
-
-//-------------------------------------------------------------------------------------------------音乐
-function 音乐() {
-	if (!$(".音乐").length) {
-		$(".mainScreen").append(`
-      <div class="音乐">
-        <div class="topBar">
-          <div class="backButton">Back</div>
-          <h3 class="title">音乐</h3>
-        </div>
-        <iframe src="./apps/音乐播放器/index.html" class="音乐Frame"></iframe>
-      </div>
-    `);
-	}
-}
-
-$("body").on("click", '.app[data-app="app音乐"]', function () {
-	音乐();
-});
-
-$("body").on("click", ".音乐 .backButton", function () {
-	$(".音乐").addClass("hidden");
-	setTimeout(function () {
-		$(".音乐").remove();
-	}, 1000);
-});
-
-//-------------------------------------------------------------------------------------------------黑白棋
-function 黑白棋() {
-	if (!$(".黑白棋").length) {
-		$(".mainScreen").append(`
-      <div class="黑白棋">
-        <div class="topBar">
-          <div class="backButton">Back</div>
-          <h3 class="title">黑白棋</h3>
-        </div>
-        <iframe src="./apps/黑白棋/index.html" class="黑白棋Frame"></iframe>
-      </div>
-    `);
-	}
-}
-
-$("body").on("click", '.app[data-app="app黑白棋"]', function () {
-	黑白棋();
-});
-
-$("body").on("click", ".黑白棋 .backButton", function () {
-	$(".黑白棋").addClass("hidden");
-	setTimeout(function () {
-		$(".黑白棋").remove();
-	}, 1000);
-});
-
-//-------------------------------------------------------------------------------------------------扫雷
-function 扫雷() {
-	if (!$(".扫雷").length) {
-		$(".mainScreen").append(`
-      <div class="扫雷">
-        <div class="topBar">
-          <div class="backButton">Back</div>
-          <h3 class="title">扫雷</h3>
-        </div>
-        <iframe src="./apps/扫雷/index.html" class="扫雷Frame"></iframe>
-      </div>
-    `);
-	}
-}
-
-$("body").on("click", '.app[data-app="app扫雷"]', function () {
-	扫雷();
-});
-
-$("body").on("click", ".扫雷 .backButton", function () {
-	$(".扫雷").addClass("hidden");
-	setTimeout(function () {
-		$(".扫雷").remove();
-	}, 1000);
-});
-
-//-------------------------------------------------------------------------------------------------视频
-function openVideoApp() {
-	if (!$(".videoApp").length) {
-		$(".mainScreen").append(`
-        <div class="videoApp">
-            <div class="topBar">
-                <div class="backButton">返回</div>
-                <h3 class="title">视频</h3>
-            </div>
-            <iframe src="./apps/video/index.html" frameborder="0" class="videoFrame"></iframe>
-        </div>
-     `);
-	} else {
-		$(".videoApp").removeClass("hidden"); // 如果已经存在，则显示
-		$(".videoApp").show(); // 确保display是block
-	}
-}
-
-$("body").on("click", '.app[data-app="app视频"]', function () {
-	openVideoApp();
-});
-
-$("body").on("click", ".videoApp .backButton", function () {
-	$(".videoApp").addClass("hidden");
-	setTimeout(function () {
-		$(".videoApp").hide(); // 1秒后隐藏
-	}, 1000); // 1秒后隐藏
 });
